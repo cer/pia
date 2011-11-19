@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"
+"http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+<bean id="commonSessionFactory" 
+	abstract="true"
+	class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+
+	<property name="dataSource">
+		<ref bean="DataSource"/>
+	</property>
+	
+	<property name="mappingLocations">
+		<list>
+			<value>classpath:net/chrisrichardson/foodToGo/domain/hibernateImpl/HibernateCoupon.hbm.xml</value>
+			<value>classpath:net/chrisrichardson/foodToGo/domain/hibernateImpl/HibernatePendingOrder.hbm.xml</value>
+			<value>classpath:net/chrisrichardson/foodToGo/domain/hibernateImpl/HibernateOrder.hbm.xml</value>
+			<value>classpath:net/chrisrichardson/foodToGo/domain/hibernateImpl/HibernateRestaurant.hbm.xml</value>
+			<value>classpath:net/chrisrichardson/foodToGo/domain/hibernateImpl/HibernateMenuItem.hbm.xml</value>
+		</list>
+	</property>
+</bean>
+
+</beans>

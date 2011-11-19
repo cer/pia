@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<entity-manager>
+   <name>pia</name>
+   <class>net.chrisrichardson.foodToGo.ejb3.domain.PendingOrder</class>
+   <class>net.chrisrichardson.foodToGo.ejb3.domain.PendingOrderLineItem</class>
+   <class>net.chrisrichardson.foodToGo.ejb3.domain.Restaurant</class>
+   <class>net.chrisrichardson.foodToGo.ejb3.domain.MenuItem</class>
+   <class>net.chrisrichardson.foodToGo.ejb3.domain.AbstractCouponImpl</class>
+   <class>net.chrisrichardson.foodToGo.ejb3.domain.TimeRange</class>
+   <class>net.chrisrichardson.foodToGo.ejb3.domain.Address</class>
+   <class>net.chrisrichardson.foodToGo.ejb3.domain.ZipCode</class>
+   <properties>
+       <property name="hibernate.dialect" value="org.hibernate.dialect.HSQLDialect"/>
+       <property name="hibernate.connection.driver_class" value="org.hsqldb.jdbcDriver"/>
+       <property name="hibernate.connection.username" value="sa"/>
+       <property name="hibernate.connection.password" value=""/>
+       <property name="hibernate.connection.url" value="jdbc:hsqldb:."/>
+       <property name="hibernate.max_fetch_depth" value="3"/>
+       <property name="hibernate.hbm2ddl.auto" value="update"/>
+       <property name="hibernate.show_sql" value="true"/>
+   </properties>
+</entity-manager>

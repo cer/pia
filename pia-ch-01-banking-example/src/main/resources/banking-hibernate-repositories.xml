@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"
+"http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+	<bean name="AccountRepository"
+		class="net.chrisrichardson.bankingExample.domain.hibernate.HibernateAccountRepository"> 
+		<constructor-arg ref="HibernateTemplate"/>
+	</bean>
+
+	<bean name="BankingTransactionRepository"
+		class="net.chrisrichardson.bankingExample.domain.hibernate.HibernateBankingTransactionRepository"> 
+		<constructor-arg ref="HibernateTemplate"/>
+	</bean>
+
+	<bean name="HibernateTemplate"
+		class="org.springframework.orm.hibernate3.HibernateTemplate">
+		<constructor-arg ref="mySessionFactory"/>
+	</bean>		
+
+</beans>

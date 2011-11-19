@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//iBATIS.com//DTD SQL Map Config 2.0//EN"
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap >
+
+	<insert id="acquireLock">
+	INSERT INTO FTGO_LOCK(CLASS_ID, PK, OWNER) VALUES(#classId#, #pk#, #owner#)
+	</insert>
+	
+	<update id="releaseLock">
+		DELETE FROM FTGO_LOCK 
+		WHERE CLASS_ID = #classId# AND PK = #pk# AND OWNER =#owner#
+	</update>
+	
+	<select id="verifyLock" resultClass="java.lang.Integer">
+		SELECT count(*) FROM FTGO_LOCK 
+		WHERE CLASS_ID = #classId# AND PK = #pk# AND OWNER = #owner#
+	</select>
+	
+	<select id="isLocked" resultClass="java.lang.Integer">
+		SELECT count(*) FROM FTGO_LOCK 
+		WHERE CLASS_ID = #classId# AND PK = #pk#
+	</select>
+
+
+</sqlMap>

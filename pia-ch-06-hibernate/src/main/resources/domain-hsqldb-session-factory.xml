@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"
+"http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+<bean id="mySessionFactory" 
+  	 parent="commonSessionFactory">
+	<property name="hibernateProperties">
+		<props>
+			<prop key="hibernate.show_sql">true</prop>
+			<prop key="hibernate.hbm2ddl.auto">update</prop> 
+			<prop key="hibernate.dialect">org.hibernate.dialect.HSQLDialect</prop>
+		</props>
+	</property>
+
+</bean>
+
+</beans>

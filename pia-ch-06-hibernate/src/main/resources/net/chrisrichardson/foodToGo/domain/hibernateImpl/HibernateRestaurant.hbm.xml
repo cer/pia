@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="net.chrisrichardson.foodToGo.domain"
+	default-access="field">
+
+	<class name="Restaurant" table="FTGO_RESTAURANT">
+
+
+		<id name="id" column="RESTAURANT_ID" type="int"
+			unsaved-value="-1">
+			<generator class="native">
+				<param name="sequence">FTGO_UNIQUE_ID_SEQUENCE</param>
+			</generator>
+		</id>
+
+		<property name="name" column="NAME" />
+		<property name="type" column="TYPE" />
+
+		<set name="serviceArea" lazy="true"
+			table="FTGO_RESTAURANT_ZIPCODE">
+			<key column="RESTAURANT_ID" />
+			<element column="ZIPCODE" type="string" />
+		</set>
+
+		<list name="menuItems" lazy="true"
+			cascade="all,delete-orphan">
+			<key column="RESTAURANT_ID" not-null="true" />
+			<index column="MENU_ITEM_INDEX" />
+			<one-to-many class="MenuItem" />
+
+		</list>
+		<set name="timeRanges" lazy="true"
+			table="FTGO_RESTAURANT_TIME_RANGE" cascade="all">
+			<key column="RESTAURANT_ID" />
+			<composite-element class="TimeRange">
+				<property name="dayOfWeek" column="day_Of_Week" />
+				<property name="openHour" column="open_Hour" />
+				<property name="openMinute" column="open_Minute" />
+				<property name="closeHour" column="close_Hour" />
+				<property name="closeMinute" column="close_Minute" />
+			</composite-element>
+		</set>
+	</class>
+
+	<query name="findAvailableRestaurants">
+		<![CDATA[
+select r 
+from Restaurant r  
+ inner join r.timeRanges tr
+ where :zipCode in elements(r.serviceArea) and 
+(tr.dayOfWeek = :dayOfWeek and 
+(tr.openHour < :hour OR (tr.openHour = :hour and tr.openMinute <= :minute)) and 
+(tr.closeHour > :hour OR (tr.closeHour = :hour and tr.closeMinute > :minute)))
+]]>
+	</query>
+
+</hibernate-mapping>

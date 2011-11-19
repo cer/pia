@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"
+"http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+	<bean name="TransferFacade"
+		class="net.chrisrichardson.bankingExample.facade.TransferFacadeImpl"> 
+		<constructor-arg ref="AccountRepository"/>
+		<constructor-arg ref="MoneyTransferService"/>
+	</bean>
+	
+	<bean name="MoneyTransferService"
+		class="net.chrisrichardson.bankingExample.domain.MoneyTransferServiceImpl">
+		<constructor-arg ref="AccountRepository"/>
+		<constructor-arg ref="BankingTransactionRepository"/>
+	</bean>
+
+</beans>

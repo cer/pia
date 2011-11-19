@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"
+"http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans default-lazy-init="true">
+
+	<bean id="PlaceOrderService" 
+			lazy-init="true"
+		  class="net.chrisrichardson.foodToGo.domain.PlaceOrderServiceImpl">
+		  <constructor-arg>
+		    <ref bean="PendingOrderRepositoryImpl"/>
+		  </constructor-arg>
+		  <constructor-arg>
+		    <ref bean="RestaurantRepositoryImpl"/>
+		  </constructor-arg>
+		  <constructor-arg>
+		    <ref bean="OrderRepository"/>
+		  </constructor-arg>
+	</bean>
+
+	<bean id="PlaceOrderFacade" 
+			lazy-init="true" 
+		  class="net.chrisrichardson.foodToGo.pojoFacade.PlaceOrderFacadeImpl">
+		  <constructor-arg>
+		    <ref bean="PlaceOrderService"/>
+		  </constructor-arg>
+		  <constructor-arg>
+		    <ref bean="RestaurantRepositoryImpl"/>
+		  </constructor-arg>
+		  <constructor-arg>
+		    <ref bean="ResultFactory"/>
+		  </constructor-arg>
+	</bean>
+	
+	<bean id="TransactionRetryInterceptor"
+		class="net.chrisrichardson.foodToGo.util.spring.TransactionRetryInterceptor">
+		<property name="maxRetryCount"><value>5</value></property>
+	</bean>
+
+
+
+    <bean id="matchAllMethods"
+        class="org.springframework.transaction.interceptor.MatchAlwaysTransactionAttributeSource" />
+
+    <bean id="TransactionInterceptor"
+        class="org.springframework.transaction.interceptor.TransactionInterceptor">
+        <property name="transactionManager">
+            <ref bean="myTransactionManager" />
+        </property>
+        <property name="transactionAttributeSource">
+            <ref bean="matchAllMethods" />
+        </property>
+    </bean>
+
+    <bean id="transactionProxyCreator"
+        class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+        <property name="beanNames">
+            <list>
+                <idref bean="PlaceOrderFacade" />
+            </list>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <idref bean="TransactionInterceptor" />
+            </list>
+        </property>
+    </bean>
+
+
+</beans>

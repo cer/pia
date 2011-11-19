@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"
+"http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+	<bean id="ResultFactory" lazy-init="true"
+		class="net.chrisrichardson.foodToGo.pojoFacade.hibernate.HibernatePlaceOrderFacadeResultFactory">
+		<constructor-arg ref="HibernateTemplate" />
+	</bean>
+
+	<!--  The rest of the Hibernate-specific beans are in pia-ch-06-hibernate/... -->
+
+
+</beans>
+

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"
+"http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+<bean id="BankingTransactionInterceptor"
+	class="org.springframework.transaction.interceptor.TransactionInterceptor">
+	<property name="transactionManager" ref="myTransactionManager"/>
+	<property name="transactionAttributeSource" ref="matchAllMethods"/>
+</bean>
+
+<bean id="matchAllMethods"
+	class="org.springframework.transaction.interceptor.MatchAlwaysTransactionAttributeSource"/>
+
+  
+<bean id="transactionProxyCreator"
+	class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+	<property name="beanNames">
+		<list>
+			<idref bean="TransferFacade"/> <!-- One of these for each POJO -->
+		</list>
+	</property>	
+	<property name="interceptorNames">
+		<list>
+			<idref bean="BankingTransactionInterceptor"/>
+		</list>
+	</property>
+</bean>
+
+<bean id="myTransactionManager"
+	class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+	<property name="sessionFactory" ref="mySessionFactory"/>
+</bean>
+
+
+
+</beans>

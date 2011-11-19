@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map Config 2.0//EN"
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap>
+	<resultMap id="OrderResultMap"
+		class="net.chrisrichardson.foodToGo.placeOrderTransactionScripts.details.OrderSummaryDTO">
+		<result property="orderId" column="ORDER_ID" />
+		<result property="restaurantName" column="RESTAURANT_NAME" />
+	</resultMap>
+
+	<select id="findOrders" resultMap="OrderResultMap"
+		resultSetType="SCROLL_INSENSITIVE">
+		SELECT /*+ FIRST_ROWS($pageSize$) */ O.ORDER_ID, R.NAME AS
+		RESTAURANT_NAME FROM FTGO_PLACED_ORDER O, FTGO_RESTAURANT R WHERE
+		O.RESTAURANT_ID = R.RESTAURANT_ID
+
+		<isNotEmpty property="restaurantName">
+			AND r.name = #criteria.restaurantName#
+		</isNotEmpty>
+
+		<isNotEmpty property="deliveryCity">
+			AND o.delivery_city = #criteria.deliveryCity#
+		</isNotEmpty>
+
+		<isNotEmpty property="state">
+			AND o.status = #criteria.state#
+		</isNotEmpty>
+
+		ORDER BY o.ORDER_ID ASC
+	</select>
+
+	<select id="findOrdersUsingRownum" resultMap="OrderResultMap"
+		resultSetType="SCROLL_INSENSITIVE">
+		<isGreaterThan property="start" compareValue="0">
+			SELECT * FROM (SELECT XX.*, ROWNUM RNXX FROM (
+		</isGreaterThan>
+
+		SELECT * FROM (
+
+			SELECT O.ORDER_ID, R.NAME AS RESTAURANT_NAME 
+			  FROM FTGO_PLACED_ORDER O,
+			  FTGO_RESTAURANT R 
+			WHERE O.RESTAURANT_ID = R.RESTAURANT_ID
+
+		<isNotEmpty property="criteria.restaurantName">
+				AND r.name = #criteria.restaurantName#
+		</isNotEmpty>
+		<isNotEmpty property="criteria.deliveryCity">
+				AND o.delivery_city = #criteria.deliveryCity#
+		</isNotEmpty>
+		<isNotEmpty property="criteria.state">
+				AND o.status = #criteria.state#
+		</isNotEmpty>
+
+			ORDER BY o.ORDER_ID ASC
+
+		) WHERE ROWNUM &lt; #maxRows#
+
+		<isGreaterThan property="start" compareValue="0">
+			) XX ) WHERE RNXX &gt; #start#
+		</isGreaterThan>
+	</select>
+
+
+</sqlMap>

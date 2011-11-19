@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"
+"http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+
+
+	<bean id="PlaceOrderServiceProxyCreator"
+		class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+		<property name="beanNames">
+			<list>
+				<idref bean="PlaceOrderService" />
+			</list>
+		</property>
+		<property name="interceptorNames">
+			<list>
+				<idref bean="TransactionRetryInterceptor" />
+				<idref bean="TransactionInterceptor" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="TransactionRetryInterceptor"
+		class="net.chrisrichardson.foodToGo.util.spring.TransactionRetryInterceptor">
+		<property name="maxRetryCount">
+			<value>5</value>
+		</property>
+	</bean>
+
+	<bean id="matchAllMethods"
+		class="org.springframework.transaction.interceptor.MatchAlwaysTransactionAttributeSource" />
+
+	<bean id="TransactionInterceptor"
+		class="org.springframework.transaction.interceptor.TransactionInterceptor">
+		<property name="transactionManager">
+			<ref bean="myTransactionManager" />
+		</property>
+		<property name="transactionAttributeSource">
+			<ref bean="matchAllMethods" />
+		</property>
+	</bean>
+
+</beans>

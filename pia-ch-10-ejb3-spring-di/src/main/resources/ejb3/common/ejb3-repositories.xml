@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"
+"http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+	<bean id="RestaurantRepositoryImpl"
+		class="net.chrisrichardson.foodToGo.ejb3.domain.EJB3RestaurantRepository">
+		<constructor-arg>
+			<ref bean="EntityManager" />
+		</constructor-arg>
+	</bean>
+
+	<bean id="PendingOrderRepositoryImpl"
+		class="net.chrisrichardson.foodToGo.ejb3.domain.EJB3PendingOrderRepository">
+		<constructor-arg>
+			<ref bean="EntityManager" />
+		</constructor-arg>
+	</bean>
+
+
+	<bean id="EntityManager"
+		class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="jndiName">
+			<value>java:comp.ejb3/EntityManager</value><!-- Used to be: java:comp.ejb3/env/EntityManager -->
+		</property>
+		<property name="lookupOnStartup">
+			<value>false</value>
+		</property>
+		<property name="proxyInterface">
+			<value>javax.persistence.EntityManager</value>
+		</property>
+	</bean>
+
+</beans>

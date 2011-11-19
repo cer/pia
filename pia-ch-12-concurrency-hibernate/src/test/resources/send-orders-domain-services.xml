@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"
+"http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans default-lazy-init="true">
+
+	
+	<bean id="DomainRestaurantNotificationService"
+		class="net.chrisrichardson.foodToGo.restaurantNotificationService.impl.DomainRestaurantNotificationService"
+		>
+		<constructor-arg ref="OrderRepository"/>
+		<constructor-arg ref="RestaurantNotificationGateway"/>
+	</bean>
+	
+
+	<bean id="DomainRestaurantNotificationServiceUsingPessimisticOfflineLocking"
+		class="net.chrisrichardson.foodToGo.restaurantNotificationService.impl.DomainRestaurantNotificationServiceUsingPessimisticOfflineLocking"
+		>
+		<constructor-arg ref="RestaurantNotificationGateway"/>
+		<constructor-arg ref="OrderRepository"/>
+		<constructor-arg ref="LockManager"/>
+	</bean>
+
+
+	<bean id="RestaurantNotificationGateway"
+		class="net.chrisrichardson.foodToGo.restaurantNotificationService.impl.FakeRestaurantNotificationGateway"/>
+	
+	<bean id="TransactionRetryInterceptor"
+		class="net.chrisrichardson.foodToGo.util.spring.TransactionRetryInterceptor">
+		<property name="maxRetryCount"><value>5</value></property>
+	</bean>
+</beans>

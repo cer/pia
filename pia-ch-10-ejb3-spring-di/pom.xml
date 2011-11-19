@@ -1,0 +1,80 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>net.chrisrichardson</groupId>
+	<artifactId>pia-ch-10-ejb3-spring-di</artifactId>
+	<packaging>jar</packaging>
+	<version>1.0-SNAPSHOT</version>
+	<name>POJOs in Action - Chapter 10, EJB 3 integrated with Spring dependency injection</name>
+	<url>http://maven.apache.org</url>
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>3.8.1</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>net.chrisrichardson</groupId>
+			<artifactId>pia-ch-10-ejb3</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
+	</dependencies>
+
+	<!-- FIXME A lot of this is duplicated from pia-ch-10-ejb3 -->
+	
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.5</source>
+					<target>1.5</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<includes>
+						<!-- FIXME: Note this deliberately ignores the tests -->
+						<include>**/*Test.class</include>
+					</includes>
+				</configuration>
+			</plugin>
+
+			<!--  This is a yucky way of generating an EJB3 but its the best way for now -->
+			<plugin>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>install</phase>
+						<configuration>
+							<tasks>
+
+								<jar jarfile="target/pia-ejb3-spring-di.ejb3">
+									<fileset dir="target/classes">
+										<exclude
+											name="**/client/*.class" />
+										<!--            <exclude name="**/jndi/*.class"/> -->
+									</fileset>
+									<fileset
+										dir="../pia-util/target/classes">
+									</fileset>
+								</jar>
+
+							</tasks>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+		</plugins>
+
+	</build>
+</project>

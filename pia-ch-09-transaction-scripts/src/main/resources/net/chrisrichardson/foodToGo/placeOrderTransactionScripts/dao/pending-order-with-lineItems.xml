@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+    <FTGO_PENDING_ORDER
+    		   PENDING_ORDER_ID="1"
+    		   RESTAURANT_ID="99"
+    		   DELIVERY_STREET1="1 myStreet"
+    		   DELIVERY_STREET2="2 myStreet"
+    		   DELIVERY_TIME="2005-06-21 10:21:30"
+    		   STATE="0" 
+		/> 
+    <FTGO_PENDING_ORDER_LINE_ITEM
+    	PENDING_ORDER_ID="1"
+    	MENU_ITEM_ID="2"
+    	QUANTITY="1"
+    	/>
+</dataset>

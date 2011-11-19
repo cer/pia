@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"
+"http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+	<bean name="spring-context.xml"
+		class="org.springframework.context.support.ClassPathXmlApplicationContext">
+		<constructor-arg>
+			<list>
+				<value>domain-hibernate-repositories.xml</value>
+				<value>hsqldb-ormunit-hibernate-strategies.xml</value>
+				<value>domain-hibernate-local-transaction-manager.xml</value>
+				<value>exception-translator.xml</value>
+				<value>define-hsqldb-datasource.xml</value>
+				<value>domain-common-session-factory.xml</value>
+				<value>domain-hsqldb-session-factory.xml</value>
+			</list>
+		</constructor-arg>
+	</bean>
+</beans>

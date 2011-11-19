@@ -1,0 +1,100 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<parent>
+		<groupId>net.chrisrichardson</groupId>
+		<artifactId>pia</artifactId>
+		<version>1.0-SNAPSHOT</version>
+		<relativePath>../pom.xml</relativePath>
+	</parent>
+
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>net.chrisrichardson</groupId>
+	<artifactId>pia-ch-13-ibatis-lock-manager</artifactId>
+	<packaging>jar</packaging>
+	<version>1.0-SNAPSHOT</version>
+	<name>POJOs in Action - Chapter 13, iBATIS Lock Manager</name>
+	<url>http://www.pojosinaction.com</url>
+	<dependencies>
+
+
+		<dependency>
+			<groupId>net.chrisrichardson</groupId>
+			<artifactId>pia-ormunit-ibatis</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.ibatis</groupId>
+			<artifactId>ibatis2-sqlmap</artifactId>
+			<version>2.1.5.582</version>
+		</dependency>
+		<dependency>
+			<groupId>com.ibatis</groupId>
+			<artifactId>ibatis2-common</artifactId>
+			<version>2.1.5.582</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>3.8.1</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>net.chrisrichardson</groupId>
+			<artifactId>pia-util</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
+			<groupId>hsqldb</groupId>
+			<artifactId>hsqldb</artifactId>
+			<version>1.7.2.2</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-dbcp</groupId>
+			<artifactId>commons-dbcp</artifactId>
+			<version>1.2.1</version>
+			<exclusions>
+				<exclusion>
+					<groupId>javax.sql</groupId>
+					<artifactId>jdbc-stdext</artifactId>
+				</exclusion>
+				<exclusion>
+					<artifactId>jdbc</artifactId>
+					<groupId>jdbc</groupId>
+				</exclusion>
+			</exclusions>
+
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring</artifactId>
+		</dependency>
+
+
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.9</version>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
+			<version>1.0.4</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-mock</artifactId>
+		</dependency>
+
+	</dependencies>
+</project>

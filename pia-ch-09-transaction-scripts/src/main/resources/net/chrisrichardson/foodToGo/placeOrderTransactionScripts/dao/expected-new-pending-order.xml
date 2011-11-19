@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+    <FTGO_PENDING_ORDER
+    		   STATE="0" 
+		/> 
+    <FTGO_PENDING_ORDER_LINE_ITEM/>
+</dataset>

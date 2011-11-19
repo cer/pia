@@ -1,0 +1,90 @@
+Navigate by chapter
+
+ This page tells you where to find the example code for each chapter.
+ 
+ Note that in some cases the downloadable code is more complex (i.e. realistic) than the example shown in the book. 
+ For example, pia-ch-03-domain-model shows a fully fleshed out domain model for the Food to Go application. 
+ 
+ Each chapter has a corresponding JUnit TestSuite called Chapter<n>AllTests that runs the tests for 
+ that chapter
+ 
+Chapter 1 - Introduction
+
+  See the pia-ch-01-banking-example, which is the Hibernate version of the transfer money example
+    
+Chapter 3 - Domain model
+  
+  See pia-ch-03-domain-model, which implements the Food to Go domain model
+ 
+Chapter 4 - Overview of object/relational mapping
+
+  See the ormunit-hibernate project, which is the Hibernate implementation of the ORMUnit testing
+  framework.
+  
+Chapter 6 - Hibernate 
+
+  See pia-ch-06-hibernate for the Hibernate implementations of the repositories and the 
+  Hibernate persistence tests
+  
+  See the ormunit-hibernate project, which is the Hibernate implementation of the ORMUnit testing
+  framework.
+  
+Chapter 7 - POJOs facade
+
+  See pia-ch-07-pojo-facade, which contains the pure POJO portion of the PlaceOrderFacade
+
+  See pia-ch-07-pojo-facade-hibernate for the Hibernate implementation
+
+Chapter 8, Exposed domain model
+
+  See pia-ch-08-exposed-hibernate for the Hibernate version of the exposed domain model example
+ 
+Chapter 9, Transaction scripts
+
+  See pia-ch-09-transaction-scripts for the iBATIS implementation of the transaction scripts
+  
+Chapter 10, EJB 3
+
+  See pia-ch-10-ejb3 and pia-ch-10-ejb3-spring-di for the EJB 3 examples.
+  
+  pia-ch-10-ejb3 contains the domain model and the pure EJB3 example.
+  These EJB 3 domain model tests run outside of the container
+  The EJB 3 session bean test runs using the JBoss microcontainer
+  See Chapter10EJB3AllTests.
+  
+  pia-ch-10-ejb3-spring-di contains the integrated Spring/EJB dependency injection example.
+  Because the JBoss microcontainer does not currently support service POJOs, you must deploy the EJBs in JBoss 4.0.3SP1
+  See {{{building.html}}} for information.
+
+Chapter 11, View Orders
+
+  For the domain model code see
+    
+    * pia-ch-11-queries-domain for the generic domain model code
+    
+    * pia-ch-11-queries-hibernate for the hibernate version.
+    
+    * Order and OrderRepository classes in pia-ch-03-domain-model and pia-ch-06-hibernate
+    
+  For the ibatis version see pia-ch-11-queries-ibatis
+  
+  Note the tests are setup to use HSQLDB syntax SQL tests.
+  
+Chapter 12, Database concurrency
+
+  For the domain model code for the Send Orders to Restaurant use case see
+
+    * pia-ch-12-concurrency-domain and pia-ch-03-domain-model.
+    
+    * pia-ch-12-concurrency-hibernate and pia-ch-06-hibernate.
+    
+Chapter 13, Offline Locking
+
+   * pia-ch-13-ibatis-lock-manager iBATIS implementation of the LockManager
+
+   * pia-ch-13-offline-locking-domain - domain model for Acknowledge Order 
+     and Modify Order use cases
+
+   * pia-ch-13-offline-locking-hibernate - hibernate code for the Acknowledge Order 
+     and Modify Order use cases
+     

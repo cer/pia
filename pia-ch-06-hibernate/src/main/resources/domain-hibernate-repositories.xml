@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"
+"http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans default-lazy-init="true">
+
+
+    <bean id="PendingOrderRepositoryImpl"
+        class="net.chrisrichardson.foodToGo.domain.hibernate.HibernatePendingOrderRepositoryImpl">
+        <constructor-arg ref="HibernateTemplate" />
+    </bean>
+
+    <bean id="RestaurantRepositoryImpl"
+        class="net.chrisrichardson.foodToGo.domain.hibernate.HibernateRestaurantRepositoryImpl">
+        <constructor-arg ref="HibernateTemplate" />
+    </bean>
+
+    <bean id="OrderRepository" 
+        class="net.chrisrichardson.foodToGo.domain.hibernate.HibernateOrderRepositoryImpl">
+        <constructor-arg ref="HibernateTemplate"/>
+        <constructor-arg ref="HibernateQueryExecutor"/>
+        <property name="lockingMode">
+            <value>PESSIMISTIC_LOCKING</value>
+        </property>
+    </bean>
+
+    <bean id="HibernateTemplate"
+        class="org.springframework.orm.hibernate3.HibernateTemplate">
+        <property name="sessionFactory" ref="mySessionFactory" />
+        <property name="jdbcExceptionTranslator"
+            ref="ExceptionTranslator" />
+    </bean>
+
+    <bean id="HibernateQueryExecutor" 
+        class="net.chrisrichardson.foodToGo.util.hibernate.HibernateQueryExecutor" >
+                <constructor-arg ref="HibernateTemplate"/>
+    </bean>
+
+
+</beans>

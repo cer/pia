@@ -1,0 +1,55 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+    <FTGO_RESTAURANT
+    	RESTAURANT_ID="99"
+    	NAME="Ajanta"/>
+    <FTGO_MENU_ITEM
+    	MENU_ITEM_ID="22"
+    	RESTAURANT_ID="99"
+    	NAME="Samosas"
+    	VERSION="0"
+    	PRICE="1.5"/>
+    <FTGO_MENU_ITEM
+    	MENU_ITEM_ID="23"
+    	RESTAURANT_ID="99"
+    	NAME="Naan"
+    	VERSION="0"
+    	PRICE="1.5"/>
+<!-- FIXME
+    <FTGO_PLACED_ORDER_STATUS
+    	STATUS="PLACED"/>
+    <FTGO_PLACED_ORDER_STATUS
+    	STATUS="SENT"/>
+ -->
+ 
+     <FTGO_PLACED_ORDER
+    	ORDER_ID="1"
+    	ORDER_EXT_ID="11"
+    	STATUS="PLACED"
+    	RESTAURANT_ID="99"
+    	DELIVERY_STREET1="1 Good Street"
+    	DELIVERY_CITY="Oakland"
+    	DELIVERY_STATE="CA"
+    	DELIVERY_ZIP="94619"
+    	DELIVERY_TIME="2003-06-21 10:21:30"
+    	VERSION="0"
+    	/>
+    <FTGO_PLACED_ORDER_LINE_ITEM
+    	LINE_ITEM_INDEX="0"
+    	QUANTITY="5"
+    	NAME="X"
+    	PRICE="10.5"
+    	EXTENDED_PRICE="52.5"
+    	ORDER_ID="1"
+    	MENU_ITEM_ID="22"
+    	/>
+    <FTGO_PLACED_ORDER_LINE_ITEM
+    	LINE_ITEM_INDEX="1"
+    	QUANTITY="3"
+    	NAME="X"
+    	PRICE="4.5"
+    	EXTENDED_PRICE="10.5"
+    	ORDER_ID="1"
+    	MENU_ITEM_ID="23"
+    	/>
+</dataset>

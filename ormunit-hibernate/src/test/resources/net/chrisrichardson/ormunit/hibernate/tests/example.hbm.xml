@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-access="field"
+	package="net.chrisrichardson.ormunit.hibernate.tests">
+
+	<class name="Customer">
+		<id name="id">
+			<generator class="native" />
+		</id>
+		<many-to-one name="address" unique="true" cascade="all" />
+		<property name="name" />
+	</class>
+
+	<class name="Address">
+		<id name="id">
+			<generator class="native" />
+		</id>
+		<property name="street1" column="DELIVERY_STREET1" />
+		<property name="street2" column="DELIVERY_STREET2" />
+		<property name="city" column="DELIVERY_CITY" />
+		<property name="state" column="DELIVERY_STATE" />
+		<property name="zip" column="DELIVERY_ZIP" />
+	</class>
+
+	<class name="ClassWithUnmappedField">
+		<id name="id">
+			<generator class="native" />
+		</id>
+	</class>
+
+	<class name="CustomerWithComponentAddress">
+		<id name="id">
+			<generator class="native" />
+		</id>
+		<property name="name" />
+		<component name="address">
+			<property name="street1" column="DELIVERY_STREET1" />
+			<property name="street2" column="DELIVERY_STREET2" />
+			<property name="city" column="DELIVERY_CITY" />
+			<property name="state" column="DELIVERY_STATE" />
+			<!-- 
+				<property name="zip" column="DELIVERY_ZIP" />
+			-->
+		</component>
+	</class>
+
+</hibernate-mapping>

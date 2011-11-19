@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"
+"http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans> 
+
+	<bean name="spring-context.xml" 
+		class="org.springframework.context.support.ClassPathXmlApplicationContext">
+		<constructor-arg>
+			<list>
+				<value>ejb3/common/ejb3-defineFacade.xml</value>
+				<value>ejb3/common/ejb3-repositories.xml</value>
+				<value>ejb3/common/ejb3-resultFactory.xml</value>
+			</list>
+		</constructor-arg>
+	</bean>
+</beans>

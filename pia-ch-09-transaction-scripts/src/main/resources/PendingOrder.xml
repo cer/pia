@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//iBATIS.com//DTD SQL Map Config 2.0//EN"
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap>
+
+<insert id="insertPendingOrder" 
+    parameterClass="net.chrisrichardson.foodToGo.placeOrderTransactionScripts.details.PendingOrderDTO">
+	INSERT INTO FTGO_PENDING_ORDER(STATE,VERSION) VALUES(0,0)
+	<selectKey resultClass="java.lang.String" keyProperty="pendingOrderId" >
+	   CALL IDENTITY()
+	</selectKey>
+</insert>
+
+<!-- Oracle version that uses sequences
+<insert id="insertPendingOrder" 
+    parameterClass="net.chrisrichardson.foodToGo.placeOrderTransactionScripts.details.PendingOrderDTO">
+	<selectKey resultClass="java.lang.String" keyProperty="pendingOrderId" >
+	   SELECT FTGO_UNIQUE_ID_SEQUENCE.NEXTVAL AS ID FROM DUAL
+	</selectKey>
+	INSERT INTO FTGO_PENDING_ORDER(PENDING_ORDER_ID, STATE) VALUES(#pendingOrderId#,0)
+</insert>
+-->
+
+<resultMap id="PendingOrderResultMap" 
+	class="net.chrisrichardson.foodToGo.placeOrderTransactionScripts.details.PendingOrderDTO">
+	<result property="pendingOrderId" column="PENDING_ORDER_ID"/>
+	<result property="state" column="STATE"/>
+	<result property="deliveryTime" column="DELIVERY_TIME"/>
+	<result property="deliveryAddress.street1" column="DELIVERY_STREET1"/>
+	<result property="deliveryAddress.street2" column="DELIVERY_STREET2"/>
+	<result property="deliveryAddress.city" column="DELIVERY_CITY"/>
+	<result property="deliveryAddress.state" column="DELIVERY_STATE"/>
+	<result property="deliveryAddress.zip" column="DELIVERY_ZIP"/>
+	<result property="lineItems" column="PENDING_ORDER_ID" select="findLineItems"/>
+	<result property="restaurant.restaurantId" column="RESTAURANT_ID"/>
+	<result property="restaurant.name" column="NAME"/>
+	<result property="restaurant.menuItems" column="RESTAURANT_ID" select="findMenuItems"/>
+</resultMap>
+
+<select id="findPendingOrder" parameterClass="java.lang.String" resultMap="PendingOrderResultMap">
+	select * 
+	from FTGO_PENDING_ORDER o left outer join FTGO_RESTAURANT r on r.restaurant_id = o.restaurant_id
+	where  
+	o.pending_order_id = #value# 
+</select>
+
+<!--  Oracle version that uses Oracle outer join syntax
+<select id="findPendingOrder" parameterClass="java.lang.String" resultMap="PendingOrderResultMap">
+	select * 
+	from FTGO_PENDING_ORDER o, FTGO_RESTAURANT r 
+	where  
+	o.pending_order_id = #value# 
+	AND r.restaurant_id (+)= o.restaurant_id
+</select>
+ -->
+ 
+<resultMap id="PendingOrderLineItemResultMap" 
+	class="net.chrisrichardson.foodToGo.placeOrderTransactionScripts.details.PendingOrderLineItemDTO">
+	<result property="quantity" column="QUANTITY"/>
+	<result property="index" column="LINE_ITEM_INDEX"/>
+	<result property="menuItem.menuItemId" column="MENU_ITEM_ID"/>
+	<result property="menuItem.name" column="NAME"/>
+	<result property="menuItem.price" column="PRICE"/>
+</resultMap>
+
+<select id="findLineItems" parameterClass="java.lang.String" resultMap="PendingOrderLineItemResultMap">
+	select * 
+	from FTGO_PENDING_ORDER_LINE_ITEM l, FTGO_MENU_ITEM mi 
+	where  
+	l.pending_order_id = #value:NUMERIC#
+	AND mi.menu_item_id = l.menu_item_id 
+</select>
+
+<resultMap id="MenuItemResultMap" 
+	class="net.chrisrichardson.foodToGo.placeOrderTransactionScripts.details.MenuItemDTO">
+	<result property="menuItemId" column="MENU_ITEM_ID"/>
+	<result property="name" column="NAME"/>
+	<result property="price" column="PRICE"/>
+</resultMap>
+
+<select id="findMenuItems" parameterClass="java.lang.String" resultMap="MenuItemResultMap">
+	select * 
+	from FTGO_MENU_ITEM mi 
+	where mi.restaurant_id = #value:NUMERIC#
+</select>
+
+<update id="savePendingOrder"
+    parameterClass="net.chrisrichardson.foodToGo.placeOrderTransactionScripts.details.PendingOrderDTO">
+	UPDATE FTGO_PENDING_ORDER 
+	SET STATE = #state#, 
+	RESTAURANT_ID = #restaurant.restaurantId:VARCHAR#, 
+	DELIVERY_STREET1 = #deliveryAddress.street1:VARCHAR#, 
+	DELIVERY_STREET2 = #deliveryAddress.street2:VARCHAR#, 
+	DELIVERY_TIME = #deliveryTime:TIMESTAMP#,
+	DELIVERY_CITY = #deliveryAddress.city:VARCHAR#, 
+	DELIVERY_STATE = #deliveryAddress.state:VARCHAR#, 
+	DELIVERY_ZIP = #deliveryAddress.zip:VARCHAR#
+	WHERE PENDING_ORDER_ID = #pendingOrderId#
+</update>
+
+<delete id="deleteLineItems">
+	DELETE FROM FTGO_PENDING_ORDER_LINE_ITEM WHERE PENDING_ORDER_ID = #pendingOrderId#
+</delete>
+
+<!-- Oracle version that uses a sequence
+<insert id="saveLineItem">
+	INSERT INTO FTGO_PENDING_ORDER_LINE_ITEM 
+	(PENDING_ORDER_LINE_ITEM_ID, LINE_ITEM_INDEX, PENDING_ORDER_ID, QUANTITY, MENU_ITEM_ID) 
+	VALUES (FTGO_UNIQUE_ID_SEQUENCE.nextval, 
+	        #lineItem.index#, 
+	        #pendingOrder.pendingOrderId#, 
+	        #lineItem.quantity#, 
+	        #lineItem.menuItem.menuItemId#)
+</insert>
+
+-->
+
+<insert id="saveLineItem">
+	INSERT INTO FTGO_PENDING_ORDER_LINE_ITEM 
+	(LINE_ITEM_INDEX, PENDING_ORDER_ID, QUANTITY, MENU_ITEM_ID) 
+	VALUES (#lineItem.index#, 
+	        #pendingOrder.pendingOrderId#, 
+	        #lineItem.quantity#, 
+	        #lineItem.menuItem.menuItemId#)
+</insert>
+
+
+<resultMap id="MenuItemsResultMap" 
+	class="net.chrisrichardson.foodToGo.placeOrderTransactionScripts.details.MenuItemDTO">
+	<result property="menuItemId" column="MENU_ITEM_ID"/>
+	<result property="name" column="NAME"/>
+	<result property="price" column="PRICE"/>
+</resultMap>
+
+<select id="findRestaurantMenuItems" parameterClass="java.lang.String" resultMap="MenuItemsResultMap">
+	select * 
+	from FTGO_MENU_ITEM mi 
+	where  
+	mi.restaurant_id = #value#
+</select>
+
+</sqlMap>

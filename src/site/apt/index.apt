@@ -1,0 +1,24 @@
+Welcome to POJOs in Action
+ 
+ This document will help you build and explore the source code.
+ 
+ The best way view the source code is to build it, generate the eclipse projects and import them
+ into an Eclipse workspace
+ 
+ The links on the left explain how to build and run the examples; navigate the source code; and get help.
+  
+ For information about downloading the example code, please see {{{download.html}downloading}}.
+ 
+ For information about building the examples, please see {{{building.html}building}}.
+ 
+ For information above navigating the source code, please see {{{byChapter.html}by chapter}} and {{{byModule.html}by module}}.
+ 
+Important
+
+  Please note the JDO code is not current part of this distribution. 
+  It will be made available shortly.
+  
+  The EJB 3 examples are not built automatically because they require the JBoss Embedded EJB3 and/or
+  JBoss server to be downloaded separately.
+
+

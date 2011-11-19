@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+    <FTGO_RESTAURANT
+    	RESTAURANT_ID="99"
+    	NAME="Ajanta"/>
+    <FTGO_MENU_ITEM/>
+    <FTGO_RESTAURANT_ZIPCODE/>
+    <FTGO_RESTAURANT_TIME_RANGE/>
+    <FTGO_PENDING_ORDER
+    		   PENDING_ORDER_ID="1"
+    		   STATE="0" 
+    		   VERSION="0" 
+		/> 
+    <FTGO_PENDING_ORDER_LINE_ITEM/>
+    <FTGO_PLACED_ORDER/>
+    <FTGO_PLACED_ORDER_LINE_ITEM/>
+</dataset>

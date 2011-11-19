@@ -1,0 +1,143 @@
+Building the POJOs in Action examples
+
+ To make building the samples easy and to avoid having to distribute the dependencies, I decided to use maven2.
+ If you haven't used maven before, it might seem a little daunting, but once maven is setup correctly (which is easy to do) it will 
+ download the required jars, compile the examples and run the tests
+ It will also generate eclipse project/classpath files and an ant build script.
+ 
+ You will also need Java 5, although the dependencies on it are minimal (except for the EJB 3 example) 
+ and if I get enough emails I will look into getting it to compile with Java 1.4.
+ 
+ And, for the EJB 3 example, you need the JBoss Embeddable EJB3 implementation.
+ 
+ To get setup please follow these steps:
+
+    [[1]] Download maven2 and install it.
+     
+    [[2]] Add Sun jars to the maven2 repository.
+   
+    [[3]] Run 'mvn install' to compile and test the examples.
+    
+    [[4]] Run 'mvn eclipse:eclipse' to generate eclipse .classpath and .project files
+     
+    [[5]] Build the EJB 3 projects
+
+ Let's look at the details
+ 
+1. Installing Maven2
+  
+  The first step is to install Maven 2.0.1. You can get it from here: {{http://maven.apache.org/download.html}}
+    
+    [[1]] Download and unzip it into a directory
+    
+    [[2]] set an environment variable M2_HOME to point to that directory. 
+          On windows: set M2_HOME=<dir>.
+          On Unix: export M2=<dir>.
+    
+    [[3]] Add M2_HOME/bin to your PATH
+    
+    [[4]] Ensure that the environment variable JAVA_HOME points to a JDK 5 installation
+    
+    [[5]] Running 'mvn --version' should print 'Maven version: 2.0.1'
+    
+    [[6]] I also found it necessary to increase the size of the Perm space using 
+          
+          * One windows: set MAVEN_OPTS=-XX:PermSize=128m -mx300m
+          
+          * On UNIX something like: export MAVEN_OPTS="-XX:PermSize=128m -mx300m"
+
+  For more information please the {{{http://maven.apache.org/download.html#installation} installation instructions}} 
+  and {{{http://maven.apache.org/guides/getting-started/index.html}getting started with Maven}}.
+
+2. Adding the sun jars to the maven2 repository
+
+  Maven will automatically download almost all jars from ibiblio.com and put them in a local repository, 
+  which is a directory hierarchy that is usually in your home directory.
+  Once the jars are in the local repository they can be used for compilation and running tests.
+  However, Sun's licensing prevents certain J2EE jars such as jta.jar from being downloaded 
+  from ibiblio.com .
+  This means that you must first download them and then add them to the repository using a maven command.
+  
+  To simplify this process, there is a windows script addj2eejars.cmd script in the toplevel directory.
+  Edit this script to point to the correct location of the jars and run it.
+  It will then add those jars to the repository.
+  The UNIX/Linux version would be very similar.
+
+  For more information see {{{http://maven.apache.org/guides/mini/guide-coping-with-sun-jars.html}coping with Sun Jars}} for the details.
+
+3. Compiling and testing the examples
+
+  Now that you have correctly installed maven2 and added the Sun jars to the repository, you can  type 'mvn install'.
+  Maven will then download all the jars, compile the examples and run the tests.
+  It will also build the jars and put them in the local repository, which is necessary when generating the eclipse files.
+  Sit back and relax while maven downloads numerous files from ibiblio (this only happens the first time).
+  Hopefully, this should work without a problem. :-)
+  Note: maven will print some harmless warnings about artifacts being relocated.
+
+  Some common problems include:
+     
+     * Network connectivity - sometimes maven encounters a network glitch that prevents it from download a file. The fix is to run the command again. 
+     Also, if you must access the internet using a proxy then please see {{{http://maven.apache.org/guides/mini/guide-proxies.html}Configuring a proxy}}.
+     
+     * The repository has changes - sometimes the maven2 repository changes (!), which requires updates to the build files (pom.xml).
+     I will publish updated pom.xml files when this happens.
+     
+     * The build seems to hang - make sure you increased the size of perm space
+
+4. Setting up eclipse
+
+
+  One of the really neat things about maven is that it will automatically generate Eclipse .project and .classpath file, 
+  which you can then import.
+  
+  To do this, you must do the following:
+  
+    [[1]] Run the command 'mvn eclipse:eclipse' to generate the files
+  
+    [[2]] Run the command 'mvn -Declipse.workspace=<path-to-eclipse-workspace> eclipse:add-maven-repo' to tell Eclipse about the repository.
+    Specifically, it sets the M2_REPO classpath variable to point to the repository. You can also create this classpath
+    variable manually inside eclipse: windows->preferences->java->build path->class path variables. 
+    Select New, enter the name M2_REPO and specify the path to the repository. 
+    On windows the repository is usually c:\Documents and Settings\<your name>\.m2\repository\.
+    On UNIX the repository is typically ~/.m2/repository.    
+
+  Maven should now have generated the .classpath and .project files in each of the subdirectories.
+    
+  For more information please {{{http://maven.apache.org/guides/mini/guide-ide-eclipse.html}Guide to using Eclipse with Maven 2.x}}.
+  
+  Maven also supports IDEA but I haven't tried this feature. 
+  See {{{http://maven.apache.org/guides/mini/guide-ide-idea.html}Using IDEA with Maven 2.x}} for the details.
+
+5. Compiling the EJB 3 examples
+
+  The EJB 3 examples (pia-ch-10-ejb3-*) are not built during the regular build process.
+  This is because the required JARs (JBoss Embeddedable EJB3 Alpha 3) are not available from ibiblio.
+  To build the EJB 3 examples please follow these steps:
+  
+    [[1]] Download and unzip {{{http://www.jboss.com/products/list/downloads#ejb3}JBoss Embeddable EJB3 Alpha 3}}
+
+    [[2]] Edit the script pia-ch-10-ejb3/installejb3jars.cmd to point at the JARs you just downloaded and run it to add those jars to the repository.
+    
+    [[3]] Uncomment the ejb3 entries in pom.xml
+    
+    [[4]] Run 'mvn install eclipse:eclipse' to build and compile the EJB3 examples and generate the relevant eclipse files. 
+    Ignore the warnings about not being able to download the poms - this is a bug in maven 2.0
+
+    [[5]] Import the newly generated projects into eclipse
+    
+    [[6]] Test the domain model and pure EJB3 example by running Chapter10EJB3AllTests
+    
+    [[7]] In order to test the integrated EJB3/Spring dependency injection you must follow these steps:
+        
+        [[a]] Deploy the EJB3 Jar pia-ch-10-ejb3/target/pia-ejb3.ejb3
+        
+        [[b]] Deploy the EJB3 Jar pia-ch-10-ejb3-spring-di/target/pia-ejb3.ejb3
+        
+        [[c]] Run InitializeDB to populate the in-server HSQLDB database
+        
+        [[d]] Run Chapter10EJB3IntegratedSpringDIAllTests
+        
+        
+        
+    
+ 

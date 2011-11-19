@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"
+"http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans default-lazy-init="true">
+
+
+    <bean id="SqlMapClient"
+        class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
+        <property name="configLocation" value="/sqlMap-config.xml" />
+        <property name="dataSource" ref="DataSource" />
+    </bean>
+
+    <bean id="SqlMapClientTemplate"
+        class="org.springframework.orm.ibatis.SqlMapClientTemplate">
+        <property name="exceptionTranslator" ref="ExceptionTranslator" />
+        <property name="sqlMapClient" ref="SqlMapClient" />
+    </bean>
+
+   <bean id="OrderDAO" lazy-init="true"
+        class="net.chrisrichardson.foodToGo.viewOrdersTransactionScripts.dao.OrderDAOIBatisImpl"
+        >
+        <constructor-arg ref="SqlMapClientTemplate"/>
+        <constructor-arg ref="IBatisPagedQueryExecutor"/>
+    </bean>
+
+    <bean id="IBatisPagedQueryExecutor" lazy-init="true"
+        class="net.chrisrichardson.foodToGo.viewOrdersTransactionScripts.dao.IBatisPagedQueryExecutor">
+        <constructor-arg>
+            <ref bean="SqlMapClientTemplate" />
+        </constructor-arg>
+    </bean>
+
+
+	<!--  FIXME: not the best place -->
+
+	<bean name="jdbcTemplate"
+		class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource" ref="DataSource"/>
+	</bean>
+
+</beans>

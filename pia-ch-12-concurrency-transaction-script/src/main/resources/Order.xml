@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map Config 2.0//EN"
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+<sqlMap>
+	<resultMap id="OrderLineItemResultMap"
+		class="net.chrisrichardson.foodToGo.placeOrderTransactionScripts.details.OrderLineItemDTO">
+		<result property="quantity" column="QUANTITY" />
+		<!-- 	<result property="index" column="LINE_ITEM_INDEX"/> -->
+		<result property="menuItem.menuItemId" column="MENU_ITEM_ID" />
+		<result property="menuItem.name" column="NAME" />
+		<result property="menuItem.price" column="PRICE" />
+	</resultMap>
+
+
+	<resultMap id="findOrdersAndLineItemsResultMap"
+		class="net.chrisrichardson.foodToGo.placeOrderTransactionScripts.details.OrderDTO"
+		groupBy="orderId">
+		<result property="orderId" column="ORDER_ID" />
+		<result property="restaurant.name" column="NAME" />
+		<result property="restaurant.restaurantId"
+			column="RESTAURANT_ID" />
+		<result property="lineItems" resultMap="OrderLineItemResultMap" />
+	</resultMap>
+
+	<select id="findOrdersToSend_ISOLATED_TRANSACTION" resultMap="findOrdersAndLineItemsResultMap"
+		parameterClass="java.sql.Timestamp">
+
+		select * 
+		from FTGO_PLACED_ORDER o, FTGO_RESTAURANT r, FTGO_PLACED_ORDER_LINE_ITEM l
+		WHERE 
+		  o.STATUS = 'PLACED' AND DELIVERY_TIME &lt; #value# 
+		  AND r.restaurant_id = o.restaurant_id
+		  and l.order_id = o.order_id
+		ORDER BY o.order_id ASC
+	</select>
+
+	<select id="findOrdersToSend_PESSIMISTIC_LOCKING" resultMap="findOrdersAndLineItemsResultMap"
+		parameterClass="java.sql.Timestamp">
+
+		select * 
+		from FTGO_PLACED_ORDER o, FTGO_RESTAURANT r, FTGO_PLACED_ORDER_LINE_ITEM l
+		WHERE 
+		  o.STATUS = 'PLACED' AND DELIVERY_TIME &lt; #value# 
+		  AND r.restaurant_id = o.restaurant_id
+		  and l.order_id = o.order_id
+		ORDER BY o.order_id ASC
+	</select>
+
+	<!--  FIXME - Not on hypersonic	FOR UPDATE o.ORDER_ID  -->	
+
+	<select id="findOrdersToSend_OPTIMISTIC_LOCKING" resultMap="findOrdersAndLineItemsResultMap"
+		parameterClass="java.sql.Timestamp">
+
+		select * 
+		from FTGO_PLACED_ORDER o, FTGO_RESTAURANT r, FTGO_PLACED_ORDER_LINE_ITEM l
+		WHERE 
+		  o.STATUS = 'PLACED' AND DELIVERY_TIME &lt; #value# 
+		  AND r.restaurant_id = o.restaurant_id
+		  and l.order_id = o.order_id
+		ORDER BY o.order_id ASC
+	</select>
+
+	<update id="markOrderAsSent_ISOLATED_TRANSACTION">
+		UPDATE FTGO_PLACED_ORDER
+		  SET STATUS = 'SENT', MESSAGE_ID = #messageId#, TIME_SENT = #timestamp#
+		WHERE ORDER_ID = #orderId#
+	</update>
+
+	<update id="markOrderAsSent_PESSIMISTIC_LOCKING">
+		UPDATE FTGO_PLACED_ORDER
+		SET STATUS = 'SENT', MESSAGE_ID = #messageId#, TIME_SENT = #timestamp#
+		WHERE ORDER_ID = #orderId# 
+	</update>
+
+	<update id="markOrderAsSent_OPTIMISTIC_LOCKING">
+		UPDATE FTGO_PLACED_ORDER
+		  SET VERSION = VERSION + 1,
+		      STATUS = 'SENT', MESSAGE_ID = #messageId#, TIME_SENT = #timestamp#
+		WHERE ORDER_ID = #orderId# AND VERSION = #version#
+	</update>
+
+</sqlMap>

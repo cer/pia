@@ -1,0 +1,84 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="net.chrisrichardson.foodToGo.domain"
+	default-access="field">
+	<class name="Order" table="FTGO_PLACED_ORDER">
+		<id name="id" column="ORDER_ID" type="int" unsaved-value="-1">
+			<generator class="native">
+				<param name="sequence">FTGO_UNIQUE_ID_SEQUENCE</param>
+			</generator>
+		</id>
+		<version name="version" column="VERSION" />
+		<property name="deliveryTime" column="DELIVERY_TIME"
+			type="timestamp" />
+		<property name="state" column="STATUS" />
+		<property name="messageId" column="MESSAGE_ID" />
+		<property name="timestamp" column="TIME_SENT" type="timestamp" />
+		<property name="notes" column="NOTES" />
+		<property name="owner" column="OWNER" />
+		<property name="externalOrderId" column="ORDER_EXT_ID" />
+		<component name="deliveryAddress" lazy="true">
+			<property name="street1" column="DELIVERY_STREET1" />
+			<property name="street2" column="DELIVERY_STREET2" />
+			<property name="city" column="DELIVERY_CITY" />
+			<property name="state" column="DELIVERY_STATE" />
+			<property name="zip" column="DELIVERY_ZIP" />
+		</component>
+		<component name="paymentInformation">
+			<property name="type" column="PAYMENT_TYPE" />
+			<property name="name" column="PAYMENT_NAME" />
+			<property name="number" column="PAYMENT_NUMBER" />
+			<property name="month" column="PAYMENT_MONTH" />
+			<property name="year" column="PAYMENT_YEAR" />
+			<component name="address">
+				<property name="street1" column="PAYMENT_STREET1" />
+				<property name="street2" column="PAYMENT_STREET2" />
+				<property name="city" column="PAYMENT_CITY" />
+				<property name="state" column="PAYMENT_STATE" />
+				<property name="zip" column="PAYMENT_ZIP" />
+			</component>
+			<property name="email" column="PAYMENT_EMAIL" />
+			<property name="phoneNumber" column="PAYMENT_PHONE" />
+		</component>
+		<many-to-one name="coupon" class="AbstractCouponImpl"
+			column="COUPON_ID" />
+		<many-to-one name="restaurant" column="RESTAURANT_ID"
+			cascade="none" />
+
+		<list name="lineItems" table="FTGO_PLACED_ORDER_LINE_ITEM"
+			cascade="all" lazy="true">
+			<key column="ORDER_ID" />
+			<index column="LINE_ITEM_INDEX" />
+			<composite-element class="OrderLineItem">
+				<property name="quantity" column="QUANTITY" />
+				<property name="name" column="name" />
+				<property name="price" column="price" />
+				<property name="extendedPrice" column="extended_Price" />
+				<many-to-one name="menuItem" column="MENU_ITEM_ID"
+					class="MenuItem" cascade="none" />
+			</composite-element>
+		</list>
+	</class>
+
+	<query name="findOrdersToSend">
+		<![CDATA[
+select waitingOrder 
+from net.chrisrichardson.foodToGo.domain.Order as waitingOrder  
+where waitingOrder.state = 'PLACED' AND waitingOrder.deliveryTime < :cutOffTime
+order by waitingOrder.externalOrderId
+ 
+]]>
+	</query>
+
+	<query name="Order.findOrderWithLineItemsAndRestaurant">
+		<![CDATA[
+from Order po
+ inner join fetch po.restaurant
+ inner join fetch po.lineItems as lineItem
+ inner join fetch lineItem.menuItem
+ where po.id = ?
+]]>
+	</query>
+
+</hibernate-mapping>

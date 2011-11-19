@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"
+"http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans default-lazy-init="true">
+
+	<bean id="ServiceLocator" 
+		class="net.chrisrichardson.foodToGo.util.domain.ServiceLocator">
+		  <constructor-arg>
+		  	<list>
+		  		<ref bean="PendingOrderRepositoryImpl"/>
+		  		<ref bean="RestaurantRepositoryImpl"/>
+		  	</list>
+		  </constructor-arg>
+	</bean>
+	
+	<bean id="PlaceOrderService" 
+			lazy-init="true"
+		  class="net.chrisrichardson.foodToGo.domain.PlaceOrderServiceImpl">
+		  <constructor-arg>
+		    <ref bean="PendingOrderRepositoryImpl"/>
+		  </constructor-arg>
+		  <constructor-arg>
+		    <ref bean="RestaurantRepositoryImpl"/>
+		  </constructor-arg>
+		  <constructor-arg>
+		    <ref bean="OrderRepository"/>
+		  </constructor-arg>
+	</bean>
+
+	<bean id="PlaceOrderFacade" 
+			lazy-init="true" 
+		  class="net.chrisrichardson.foodToGo.pojoFacade.PlaceOrderFacadeImpl">
+		  <constructor-arg>
+		    <ref bean="PlaceOrderService"/>
+		  </constructor-arg>
+		  <constructor-arg>
+		    <ref bean="RestaurantRepositoryImpl"/>
+		  </constructor-arg>
+		  <constructor-arg>
+		    <ref bean="ResultFactory"/>
+		  </constructor-arg>
+	</bean>
+	
+	<bean id="DomainRestaurantNotificationService"
+		lazy-init="true"
+		autowire="constructor"
+		class="net.chrisrichardson.foodToGo.restaurantNotificationService.impl.DomainRestaurantNotificationService"
+		>
+	</bean>
+	
+
+	<bean id="DomainRestaurantNotificationServiceUsingPessimisticOfflineLocking"
+		lazy-init="true"
+		autowire="constructor"
+		class="net.chrisrichardson.foodToGo.restaurantNotificationService.impl.DomainRestaurantNotificationServiceUsingPessimisticOfflineLocking"
+		>
+	</bean>
+
+
+	<bean id="RestaurantNotificationGateway"
+		 lazy-init="true"
+		class="net.chrisrichardson.foodToGo.restaurantNotificationService.impl.FakeRestaurantNotificationGateway"/>
+	
+	<bean id="DetachingAcknowledgeOrderService"
+		lazy-init="true"
+		class="net.chrisrichardson.foodToGo.acknowledgeOrderService.impl.DetachingAcknowledgeOrderServiceImpl"
+		autowire="constructor"/>
+		
+	<bean id="DetachingAcknowledgeOrderServiceWithLock"
+		lazy-init="true"
+		class="net.chrisrichardson.foodToGo.acknowledgeOrderService.impl.DetachingAcknowledgeOrderServiceWithLockImpl"
+		autowire="constructor"/>
+		
+	<bean id="ModifyOrderFacade"
+		lazy-init="true"
+		class="net.chrisrichardson.foodToGo.modifyOrderService.impl.ModifyOrderFacadeImpl"
+		autowire="constructor"/>
+		
+	<bean id="ModifyOrderService"
+		lazy-init="true"
+		class="net.chrisrichardson.foodToGo.modifyOrderService.impl.ModifyOrderServiceLockManagerImpl"
+		autowire="constructor"/>
+
+<!--		
+	<bean id="PessimisticOfflineLockingMonitorThreadLocalImpl"
+		class="net.chrisrichardson.foodToGo.modifyOrderService.impl.spring.hibernate.PessimisticOfflineLockingMonitorThreadLocalImpl"/>
+		
+	<bean id="PessimisticOfflineLockingInterceptor"
+		class="net.chrisrichardson.foodToGo.modifyOrderService.impl.spring.hibernate.PessimisticOfflineLockingCheckingInterceptor">
+		  <constructor-arg>
+		    <ref bean="PessimisticOfflineLockingMonitorThreadLocalImpl"/>
+		  </constructor-arg>
+	</bean>
+-->
+
+	<bean id="TransactionRetryInterceptor"
+		class="net.chrisrichardson.foodToGo.util.spring.TransactionRetryInterceptor">
+		<property name="maxRetryCount"><value>5</value></property>
+	</bean>
+</beans>

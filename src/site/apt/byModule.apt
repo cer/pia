@@ -1,0 +1,107 @@
+Navigate by module
+
+  This page explains the purpose of each project in the directory hierarchy.
+  
+ormunit-hibernate
+ 
+ This project is the Hibernate version of the ORMUnit testing framework, which is described in 
+ chapters 4 (Overview of object/relational mapping) and 6 (hibernate)
+ 
+ormunit-ibatis
+
+  This project contains the iBATIS version of ORMUnit. Right now its just a couple of classes.
+  
+pia-ch-01-banking-example
+
+ This is the Hibernate version of the transfer money example, which is described in chapter 1.
+ 
+pia-ch-03-domain-model
+
+  Implements:
+  
+   * the Food to Go domain model described in Chapter 3 (domain model) 
+   
+   * Some business logic for Chapter 11 (View Orders)
+   
+   * Some business logic for Chapter 12 (Concurrency)
+  
+pia-ch-06-hibernate 
+
+  The Hibernate implementations of the code in Chapter 6: repositories and the persistence tests
+  
+  Some of the business logic in later chapters such as Chapter 11 (View Orders)
+  
+pia-ch-07-pojo-facade
+
+  Contains the pure POJO portion of the PlaceOrderFacade described in Chapter 7 (POJO facade)
+
+pia-ch-07-pojo-facade-hibernate
+
+  Contains the Hibernate implementation (result factory and tests) of the PlaceOrderFacade 
+  described in Chapter 7 (POJO facade)
+  
+pia-ch-08-exposed-hibernate 
+
+  Hibernate version of the exposed domain model example from Chapter 8 (Exposed Domain Model)
+  
+pia-ch-09-transaction-scripts
+
+  The iBATIS implementation of the transaction scripts from Chapter 9 (Transaction scripts)
+
+pia-ch-10-ejb3
+
+   The EJB 3 domain model and pure EJB 3 example from Chapter 10 (EJB 3)
+   
+pia-ch-10-ejb3-spring-di
+
+   The integrating Spring/EJB3 dependency injection example from Chapter 10 (EJB 3)
+   
+pia-ch-11-queries-domain
+
+  Generic domain model code for Chapter 11 (View Orders)
+
+pia-ch-11-queries-hibernate
+
+  Hibernate code for Chapter 11 (View Orders)
+
+pia-ch-11-queries-ibatis
+
+  iBATIS code for Chapter 11 (View Orders)
+
+pia-ch-12-concurrency-domain
+
+  Domain model code for Chapter 12 (Concurrency)
+  
+pia-ch-12-concurrency-hibernate
+
+  Hibernate version of code from Chapter 12 (Concurrency)
+  
+pia-ch-12-concurrency-ibatis
+
+  iBATIS version of the code from Chapter 12 (concurrency)
+  
+pia-ch-13-ibatis-lock-manager
+
+  iBATIS implementation of the LockManager described in Chapter 13 (offline locking)
+  
+
+pia-ch-13-offline-locking-domain
+
+  Domain model for Acknowledge Order and Modify Order use cases from
+  Chapter 13 (Offline Locking)
+  
+pia-util
+
+  Miscellaneous utility code. Needs to be cleaned up.
+  
+pia-util-spring
+
+  Miscellaneous Spring utility code
+
+shared-spring-hibernate
+  
+   A parent maven project for Hibernate/Spring projects
+
+shared-spring-ibatis
+
+   A parent maven project for iBATIS/Spring projects

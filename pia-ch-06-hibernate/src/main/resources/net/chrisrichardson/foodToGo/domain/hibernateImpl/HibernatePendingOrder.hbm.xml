@@ -1,0 +1,93 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping default-access="field"
+	package="net.chrisrichardson.foodToGo.domain">
+	<class name="PendingOrder" table="FTGO_PENDING_ORDER"
+		dynamic-update="true">
+		<id name="id" column="PENDING_ORDER_ID" type="int"
+			unsaved-value="-1">
+			<generator class="native">
+				<param name="sequence">FTGO_UNIQUE_ID_SEQUENCE</param>
+			</generator>
+		</id>
+		<version name="version" column="VERSION" />
+		<property name="deliveryTime" column="DELIVERY_TIME"
+			type="timestamp" />
+		<property name="state" column="STATE" />
+
+		<component name="deliveryAddress">
+			<property name="street1" column="DELIVERY_STREET1" />
+			<property name="street2" column="DELIVERY_STREET2" />
+			<property name="city" column="DELIVERY_CITY" />
+			<property name="state" column="DELIVERY_STATE" />
+			<property name="zip" column="DELIVERY_ZIP" />
+		</component>
+
+		<component name="paymentInformation">
+			<property name="type" column="PAYMENT_TYPE" />
+			<property name="name" column="PAYMENT_NAME" />
+			<property name="number" column="PAYMENT_NUMBER" />
+			<property name="month" column="PAYMENT_MONTH" />
+			<property name="year" column="PAYMENT_YEAR" />
+			<component name="address">
+				<property name="street1" column="PAYMENT_STREET1" />
+				<property name="street2" column="PAYMENT_STREET2" />
+				<property name="city" column="PAYMENT_CITY" />
+				<property name="state" column="PAYMENT_STATE" />
+				<property name="zip" column="PAYMENT_ZIP" />
+			</component>
+			<property name="email" column="PAYMENT_EMAIL" />
+			<property name="phoneNumber" column="PAYMENT_PHONE" />
+		</component>
+
+		<many-to-one name="restaurant" column="RESTAURANT_ID"
+			cascade="none" />
+
+		<list name="lineItems" table="FTGO_PENDING_ORDER_LINE_ITEM"
+			cascade="all">
+			<key column="PENDING_ORDER_ID" />
+			<index column="LINE_ITEM_INDEX" />
+			<composite-element class="PendingOrderLineItem">
+				<property name="quantity" column="QUANTITY" />
+				<many-to-one name="menuItem" column="MENU_ITEM_ID"
+					class="MenuItem" cascade="none" />
+			</composite-element>
+		</list>
+
+		<many-to-one name="coupon" class="AbstractCouponImpl"
+			column="COUPON_ID" fetch="select" />
+
+
+	</class>
+
+	<query
+		name="PendingOrder.findPendingOrderWithRestaurantLineItemsAndMenuItems">
+		<![CDATA[
+from PendingOrder po
+ left outer join fetch po.restaurant
+ left outer join fetch po.lineItems as lineItem
+ left outer join fetch lineItem.menuItem
+ where po.id = ?
+]]>
+	</query>
+
+	<query
+		name="PendingOrder.findPendingOrderWithRestaurantAndMenuItems">
+		<![CDATA[
+from PendingOrder po
+ left outer join fetch po.restaurant as r
+ left outer join fetch r.menuItems
+ where po.id = ?
+]]>
+	</query>
+
+	<query name="PendingOrder.findPendingOrderWithLineItems">
+		<![CDATA[
+from PendingOrder po
+ left outer join fetch po.lineItems
+ where po.id = ?
+]]>
+	</query>
+
+</hibernate-mapping>

@@ -1,0 +1,158 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>net.chrisrichardson</groupId>
+	<artifactId>pia</artifactId>
+	<packaging>pom</packaging>
+	<version>1.0-SNAPSHOT</version>
+	<name>POJOs in Action</name>
+
+	<modules>
+		<module>pia-ch-01-banking-example</module>
+		<module>pia-ch-03-domain-model</module>
+		<module>pia-ch-06-hibernate</module>
+		<module>pia-ch-07-pojo-facade</module>
+		<module>pia-ch-07-pojo-facade-hibernate</module>
+		<module>pia-ch-08-exposed-hibernate</module>
+		<module>pia-ch-09-transaction-scripts</module>
+
+
+		<module>pia-ch-11-queries-domain</module>
+		<module>pia-ch-11-queries-hibernate</module>
+		<module>pia-ch-11-queries-ibatis</module>
+		<module>pia-ch-12-concurrency-domain</module>
+		<module>pia-ch-12-concurrency-hibernate</module>
+		<module>pia-ch-12-concurrency-transaction-script</module>
+		<module>pia-ch-13-offline-locking-domain</module>
+		<module>pia-ch-13-ibatis-lock-manager</module>
+		<module>pia-ch-13-offline-locking-hibernate</module>
+
+		<module>shared-spring-hibernate</module>
+		<module>shared-spring-ibatis</module>
+		<module>ormunit-ibatis</module>
+		<module>ormunit-hibernate</module>
+		<module>pia-util</module>
+		<module>pia-util-spring</module>
+		<!-- 
+			<module>ormunit-jdo</module>
+			<module>ormunit-jdo-jpox</module>
+			<module>pia-test</module>
+		-->
+	</modules>
+
+	<profiles>
+		<profile>
+			<id>ejb3</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<modules>
+				<module>pia-ch-10-ejb3</module>
+				<module>pia-ch-10-ejb3-spring-di</module>
+			</modules>
+		</profile>
+	</profiles>
+
+	<scm>
+		<connection>scm:svn:svn://arrakis</connection>
+	</scm>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>commons-dbcp</groupId>
+				<artifactId>commons-dbcp</artifactId>
+				<version>1.2.1</version>
+				<exclusions>
+					<exclusion>
+						<groupId>javax.sql</groupId>
+						<artifactId>jdbc-stdext</artifactId>
+					</exclusion>
+					<exclusion>
+						<artifactId>jdbc</artifactId>
+						<groupId>jdbc</groupId>
+					</exclusion>
+				</exclusions>
+
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring</artifactId>
+				<version>2.0.2</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-mock</artifactId>
+				<version>2.0.2</version>
+				<exclusions>
+					<exclusion>
+						<artifactId>spring-beans</artifactId>
+						<groupId>org.springframework</groupId>
+					</exclusion>
+					<exclusion>
+						<artifactId>spring-context</artifactId>
+						<groupId>org.springframework</groupId>
+					</exclusion>
+					<exclusion>
+						<artifactId>spring-core</artifactId>
+						<groupId>org.springframework</groupId>
+					</exclusion>
+					<exclusion>
+						<artifactId>spring-dao</artifactId>
+						<groupId>org.springframework</groupId>
+					</exclusion>
+					<exclusion>
+						<artifactId>spring-jdbc</artifactId>
+						<groupId>org.springframework</groupId>
+					</exclusion>
+					<exclusion>
+						<artifactId>spring-jpa</artifactId>
+						<groupId>org.springframework</groupId>
+					</exclusion>
+					<exclusion>
+						<artifactId>spring-webmvc</artifactId>
+						<groupId>org.springframework</groupId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate</artifactId>
+				<version>3.2.2.ga</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<configuration>
+					<descriptor>src/main/assembly/dep.xml</descriptor>
+					<includeSite>true</includeSite>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.5</source>
+					<target>1.5</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<includes>
+						<include>**/*Tests.class</include>
+					</includes>
+				</configuration>
+			</plugin>
+		</plugins>
+
+	</build>
+
+
+</project>

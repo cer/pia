@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"
+"http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans default-lazy-init="true">
+
+
+	<bean id="DetachingAcknowledgeOrderService"
+		class="net.chrisrichardson.foodToGo.acknowledgeOrderService.impl.DetachingAcknowledgeOrderServiceImpl"
+		>
+		<constructor-arg ref="OrderRepository"/>
+		<constructor-arg ref="OrderAttachmentManager"/>
+    </bean>
+
+	<bean id="DetachingAcknowledgeOrderServiceWithLock" 
+		class="net.chrisrichardson.foodToGo.acknowledgeOrderService.impl.DetachingAcknowledgeOrderServiceWithLockImpl"
+		>
+		<constructor-arg ref="OrderRepository"/>
+		<constructor-arg ref="OrderAttachmentManager"/>
+		<constructor-arg ref="LockManager"/>
+	</bean>
+
+	<bean id="ModifyOrderService" 
+		class="net.chrisrichardson.foodToGo.modifyOrderService.impl.ModifyOrderServiceLockManagerImpl"
+		>
+		<constructor-arg ref="OrderRepository"/>
+		<constructor-arg ref="PendingOrderRepositoryImpl"/>
+		<constructor-arg ref="RestaurantRepositoryImpl"/>
+		<constructor-arg ref="LockManager"/>
+   </bean>
+
+	<bean id="TransactionRetryInterceptor"
+		class="net.chrisrichardson.foodToGo.util.spring.TransactionRetryInterceptor">
+		<property name="maxRetryCount">
+			<value>5</value>
+		</property>
+	</bean>
+
+	<bean id="OrderAttachmentManager"
+		class="net.chrisrichardson.foodToGo.acknowledgeOrderService.hibernate.HibernateOrderAttachmentManager">
+		<constructor-arg ref="HibernateTemplate"/>
+	</bean>
+
+</beans>

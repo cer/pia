@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//iBATIS.com//DTD SQL Map Config 2.0//EN"
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap>
+
+
+<resultMap id="RestaurantResultMap" 
+	class="net.chrisrichardson.foodToGo.placeOrderTransactionScripts.details.RestaurantDTO">
+	<result property="restaurantId" column="RESTAURANT_ID"/>
+	<result property="name" column="NAME"/>
+	<result property="menuItems" column="RESTAURANT_ID" select="findMenuItems"/>
+</resultMap>
+
+
+<select id="findAvailableRestaurants" 
+        parameterClass="java.util.Map" 
+        resultMap="RestaurantResultMap">
+<![CDATA[
+  SELECT r.*
+  FROM FTGO_RESTAURANT r, FTGO_RESTAURANT_ZIPCODE rz, FTGO_RESTAURANT_TIME_RANGE tr
+  WHERE rz.ZIPCODE = #zipCode# 
+    AND rz.RESTAURANT_ID = r.RESTAURANT_ID
+    AND tr.RESTAURANT_ID = r.RESTAURANT_ID
+    AND tr.DAY_OF_WEEK = #dayOfWeek#
+    AND (tr.OPEN_HOUR < #hour# OR (tr.open_Hour = #hour# and tr.open_Minute <= #minute#)) 
+    and (tr.close_Hour > #hour# OR (tr.close_Hour = #hour# and tr.close_Minute > #minute#))
+]]>
+    
+</select>
+
+<select id="isInServiceArea" 
+		resultClass="java.lang.Integer">
+<![CDATA[
+  SELECT COUNT(*)
+  FROM FTGO_RESTAURANT_ZIPCODE rz, FTGO_RESTAURANT_TIME_RANGE tr
+  WHERE rz.ZIPCODE = #zipCode# 
+    AND rz.RESTAURANT_ID = #restaurantId#
+    AND tr.RESTAURANT_ID = #restaurantId#
+    AND tr.DAY_OF_WEEK = #dayOfWeek#
+    AND (tr.OPEN_HOUR < #hour# OR (tr.open_Hour = #hour# and tr.open_Minute <= #minute#)) 
+    and (tr.close_Hour > #hour# OR (tr.close_Hour = #hour# and tr.close_Minute > #minute#))
+]]>
+    
+</select>
+
+
+<select id="findRestaurant" parameterClass="java.lang.String" resultMap="RestaurantResultMap">
+	select * 
+	from FTGO_RESTAURANT r 
+	where r.restaurant_id = #restaurantId#
+</select>
+
+</sqlMap>

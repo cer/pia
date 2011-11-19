@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"
+"http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+	
+
+    <bean id="resetDatabaseStrategy"
+    	class="net.chrisrichardson.ormunit.hibernate.ResetDatabaseByRecreatingSchemaStrategy"/>
+    	
+    <bean id="HibernatePersistenceTestsStrategy"
+    	class="net.chrisrichardson.ormunit.hibernate.SimpleHibernatePersistenceTestsStrategy">
+    	<constructor-arg ref="transactionTemplate"/>
+    </bean>
+
+    <bean id="transactionTemplate"
+    	class="org.springframework.transaction.support.TransactionTemplate">
+    	<property name="transactionManager" ref="myTransactionManager"/>
+    </bean>
+    
+    	
+</beans>
+	

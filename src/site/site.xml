@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="POJOs in Action">
+  <bannerLeft>
+    <name>POJOs in Action</name>
+    <!--
+    <src>http://www.pojosinaction.com/images/bookCover150.jpg</src>
+    <href>http://www.pojosinaction.com/</href>
+    -->
+  </bannerLeft>
+    <!--
+  <bannerRight>
+    <src>http://maven.apache.org/images/maven-small.gif</src>
+  </bannerRight>
+    -->
+  <body>
+    <links>
+      <item name="My website" href="http://www.pojosinaction.com" />
+      <item name="My blog" href="http://chris-richardson.blog-city.com"/>
+      <item name="The book" href="http://www.manning.com/crichardson/"/>
+    </links>
+
+    <menu name="POJOs in Action">
+      <item name="Introduction" href="index.html"/>
+      <item name="Download" href="download.html"/>
+      <item name="Building" href="building.html" />
+      <item name="Help" href="help.html"/>
+    </menu>
+    <menu name="Navigate the source code">
+      <item name="By chapter" href="byChapter.html"/>
+      <item name="By module" href="byModule.html" />
+    </menu>
+
+  </body>
+</project>

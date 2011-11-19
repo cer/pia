@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="net.chrisrichardson.bankingExample.domain"
+	default-access="field">
+
+	<class name="Account" table="BANK_ACCOUNT" dynamic-update="true">
+		<id name="id" unsaved-value="-1" column="ACCOUNT_ID">
+			<generator class="native" />
+		</id>
+		<property name="balance" column="BALANCE"/>
+		<property name="accountId"/>
+		<many-to-one name="overdraftPolicy" cascade="all" class="OverdraftPolicyImpl"/>
+	</class>
+	
+	<class name="OverdraftPolicyImpl" table="OVERDRAFT_POLICY">
+		<id name="id" unsaved-value="-1">
+			<generator class="native" />
+		</id>
+		
+		<discriminator  column="OVERDRAFT_TYPE"/>
+		
+		<subclass name="NoOverdraftAllowed" discriminator-value="NONE">
+		</subclass>
+	</class>
+	
+	<class name="TransferTransaction" table="BANKING_TRANSACTION">
+		<id name="id" unsaved-value="-1">
+			<generator class="native" />
+		</id>
+		<many-to-one name="fromAccount"/>
+		<many-to-one name="toAccount"/>
+		<property name="amount"/>
+		<property name="date"/>
+	</class>
+	
+	<query name="Account.findAccountByAccountId">
+	 from Account where accountId = :accountId
+	</query>
+
+</hibernate-mapping>
+

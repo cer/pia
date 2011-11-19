@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+    <FTGO_RESTAURANT
+    	RESTAURANT_ID="99"
+    	NAME="Ajanta"/>
+    <FTGO_PENDING_ORDER
+    		   PENDING_ORDER_ID="1"
+    		   DELIVERY_STREET1="1 myStreet"
+    		   DELIVERY_STREET2="2 myStreet"
+    		   DELIVERY_TIME="2005-06-21 10:21:30"
+    		   STATE="0" 
+    		   VERSION="0" 
+		/> 
+    <FTGO_PENDING_ORDER_LINE_ITEM/>
+    <FTGO_MENU_ITEM/>
+    <FTGO_PLACED_ORDER/>
+    <FTGO_PLACED_ORDER_LINE_ITEM/>
+</dataset>

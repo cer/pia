@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"
+"http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans default-lazy-init="true">
+
+
+    <bean id="SqlMapClient"
+        class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
+        <property name="configLocation" value="/sqlMap-config.xml" />
+        <property name="dataSource" ref="DataSource" />
+    </bean>
+
+    <bean id="SqlMapClientTemplate"
+        class="org.springframework.orm.ibatis.SqlMapClientTemplate">
+<!--  TODO         
+	<property name="exceptionTranslator" ref="ExceptionTranslator" />
+-->
+        <property name="sqlMapClient" ref="SqlMapClient" />
+    </bean>
+
+</beans>

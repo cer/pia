@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"
+"http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+
+    <bean id="PlaceOrderResultFactory" lazy-init="true"
+        class="net.chrisrichardson.foodToGo.placeOrderTransactionScripts.PlaceOrderResultFactoryImpl">
+    </bean>
+
+    <bean id="PlaceOrderTransactionScripts" lazy-init="true"
+        class="net.chrisrichardson.foodToGo.placeOrderTransactionScripts.PlaceOrderTransactionScriptsImpl">
+        <constructor-arg ref="PendingOrderDAO" />
+        <constructor-arg ref="RestaurantDAO" />
+    </bean>
+
+    <bean id="DataSourceTransactionInterceptor"
+        class="org.springframework.transaction.interceptor.TransactionInterceptor">
+        <property name="transactionManager"
+            ref="DataSourceTransactionManager" />
+        <property name="transactionAttributeSource">
+            <ref bean="tsMatchAllMethods" />
+        </property>
+    </bean>
+
+    <bean id="tsMatchAllMethods"
+        class="org.springframework.transaction.interceptor.MatchAlwaysTransactionAttributeSource">
+        <property name="transactionAttribute">
+            <value>PROPAGATION_REQUIRED</value>
+        </property>
+    </bean>
+
+
+    <bean id="PlaceOrderTransactionScriptsProxyCreator"
+        class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+        <property name="beanNames">
+            <list>
+                <idref bean="PlaceOrderTransactionScripts" />
+                <value>ViewOrdersService</value>
+            </list>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <idref bean="DataSourceTransactionInterceptor" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="DataSourceTransactionManager"
+        class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="DataSource" />
+    </bean>
+
+</beans>

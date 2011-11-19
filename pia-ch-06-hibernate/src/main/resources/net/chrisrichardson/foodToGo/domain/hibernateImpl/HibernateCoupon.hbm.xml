@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="net.chrisrichardson.foodToGo.domain"
+	default-access="field">
+
+	<class name="AbstractCouponImpl" table="FTGO_COUPON">
+
+		<id column="COUPON_ID" name="id" type="int"
+			unsaved-value="-1">
+			<generator class="native">
+				<param name="sequence">FTGO_UNIQUE_ID_SEQUENCE</param>
+			</generator>
+		</id>
+
+		<discriminator column="COUPON_TYPE" />
+
+
+		<subclass name="FreeShippingCoupon"
+			discriminator-value="FREE_SHIP">
+			<property name="code" column="CODE" />
+			<property name="minimum" column="MINIMUM" />
+		</subclass>
+
+		<subclass name="PercentageDiscountCoupon"
+			discriminator-value="PER_DISCOUNT">
+			<property name="code" column="CODE" />
+			<property name="discountPercentage" column="DISCOUNT_PER" />
+			<property name="minimum" column="MINIMUM" />
+		</subclass>
+	</class>
+
+</hibernate-mapping>
