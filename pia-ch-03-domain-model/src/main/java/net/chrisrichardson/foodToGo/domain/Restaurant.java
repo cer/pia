@@ -16,10 +16,12 @@
  
 package net.chrisrichardson.foodToGo.domain;
 
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
-import net.chrisrichardson.foodToGo.util.*;
-import net.chrisrichardson.foodToGo.views.*;
+import net.chrisrichardson.foodToGo.util.Address;
+import net.chrisrichardson.foodToGo.views.RestaurantDetail;
 
 public class Restaurant implements RestaurantDetail {
 
@@ -27,13 +29,13 @@ public class Restaurant implements RestaurantDetail {
 
 	private String name;
 
-	private Set serviceArea;
+	private Set<String> serviceArea;
 
 	private String notificationEmailAddress;
 
-	private List menuItems;
+	private List<MenuItem> menuItems;
 
-	private Set timeRanges;
+	private Set<TimeRange> openingHours;
 
 	private String type;
 
@@ -45,12 +47,12 @@ public class Restaurant implements RestaurantDetail {
 	 * Creates a Restaurant
 	 */
 
-	public Restaurant(String name, String type, Set serviceArea,
-			Set openingHours, List menuItems) {
+	public Restaurant(String name, String type, Set<String> serviceArea,
+			Set<TimeRange> openingHours, List<MenuItem> menuItems) {
 		this.name = name;
 		this.type = type;
 		this.serviceArea = serviceArea;
-		this.timeRanges = openingHours;
+		this.openingHours = openingHours;
 		this.menuItems = menuItems;
 	}
 
@@ -66,16 +68,16 @@ public class Restaurant implements RestaurantDetail {
 		return notificationEmailAddress;
 	}
 
-	public Set getServiceArea() {
+	public Set<String> getServiceArea() {
 		return serviceArea;
 	}
 
-	public List getMenuItems() {
+	public List<MenuItem> getMenuItems() {
 		return menuItems;
 	}
 
-	public Set getOpeningHours() {
-		return timeRanges;
+	public Set<TimeRange> getOpeningHours() {
+		return openingHours;
 	}
 
 	public String getRestaurantId() {
@@ -87,8 +89,7 @@ public class Restaurant implements RestaurantDetail {
 	}
 
 	private boolean isOpenAtThisTime(Date deliveryTime) {
-		for (Iterator it = timeRanges.iterator(); it.hasNext();) {
-			TimeRange range = (TimeRange) it.next();
+		for (TimeRange range : openingHours) {
 			if (range.isOpenAtThisTime(deliveryTime))
 				return true;
 		}
@@ -101,8 +102,40 @@ public class Restaurant implements RestaurantDetail {
 		return result;
 	}
 
-	public String getId() {
-		return Integer.toString(id);
+	public int getId() {
+	  return id;
 	}
 
+  public void setOpeningHours(Set<TimeRange> openingHours) {
+    this.openingHours = openingHours;
+  }
+  
+  // Extra setters
+
+  public void setId(int id) {
+    this.id = id;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public void setServiceArea(Set<String> serviceArea) {
+    this.serviceArea = serviceArea;
+  }
+
+  public void setNotificationEmailAddress(String notificationEmailAddress) {
+    this.notificationEmailAddress = notificationEmailAddress;
+  }
+
+  public void setMenuItems(List<MenuItem> menuItems) {
+    this.menuItems = menuItems;
+  }
+
+  public void setType(String type) {
+    this.type = type;
+  }
+
+  
+  
 }

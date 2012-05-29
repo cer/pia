@@ -18,8 +18,6 @@
 
 package net.chrisrichardson.ormunit.hibernate;
 
-import java.io.Serializable;
-
 import net.chrisrichardson.util.TxnCallback;
 
 import org.springframework.orm.hibernate3.HibernateTemplate;

@@ -16,13 +16,14 @@
  
 package net.chrisrichardson.foodToGo.placeOrderTransactionScripts.dao;
 
-import net.chrisrichardson.foodToGo.placeOrderTransactionScripts.details.*;
-import net.chrisrichardson.ormunit.ibatis.*;
+import net.chrisrichardson.foodToGo.placeOrderTransactionScripts.details.PendingOrderDTO;
+import net.chrisrichardson.ormunit.ibatis.IBatisTests;
 
-import com.ibatis.sqlmap.engine.impl.*;
-import com.ibatis.sqlmap.engine.mapping.parameter.*;
-import com.ibatis.sqlmap.engine.mapping.result.*;
-import com.ibatis.sqlmap.engine.mapping.statement.*;
+import com.ibatis.sqlmap.engine.impl.ExtendedSqlMapClient;
+import com.ibatis.sqlmap.engine.mapping.parameter.ParameterMapping;
+import com.ibatis.sqlmap.engine.mapping.result.ResultMap;
+import com.ibatis.sqlmap.engine.mapping.result.ResultMapping;
+import com.ibatis.sqlmap.engine.mapping.statement.MappedStatement;
 
 public class IBatisMappingTests extends IBatisTests {
 
@@ -68,23 +69,23 @@ public class IBatisMappingTests extends IBatisTests {
                 .getResultClass());
         resultMappings = resultMap.getResultMappings();
 
-        BasicResultMapping idMapping = findBasicResultMapping("pendingOrderId");
+        ResultMapping idMapping = findBasicResultMapping("pendingOrderId");
         assertEquals("PENDING_ORDER_ID", idMapping
                 .getColumnName());
-        BasicResultMapping lineItemsMapping = findBasicResultMapping("lineItems");
+        ResultMapping lineItemsMapping = findBasicResultMapping("lineItems");
         assertEquals("PENDING_ORDER_ID",
                 lineItemsMapping.getColumnName());
         assertEquals("findLineItems", lineItemsMapping
                 .getStatementName());
     }
 
-    private BasicResultMapping findBasicResultMapping(
+    private ResultMapping findBasicResultMapping(
             String propertyName) {
         for (int i = 0; i < resultMappings.length; i++) {
             ResultMapping mapping = resultMappings[i];
             if (mapping.getPropertyName().equals(
                     propertyName)) {
-                return (BasicResultMapping) mapping;
+                return (ResultMapping) mapping;
             }
         }
         fail("no mapping for property: "
@@ -112,7 +113,7 @@ public class IBatisMappingTests extends IBatisTests {
             String propertyName, String columnName) {
         ResultMapping mapping = findMapping(propertyName);
         assertEquals(columnName,
-                ((BasicResultMapping) mapping)
+                ((ResultMapping) mapping)
                         .getColumnName());
     }
 
@@ -134,7 +135,7 @@ public class IBatisMappingTests extends IBatisTests {
             String propertyName, String columnName,
             String selectName) {
         ResultMapping mapping = findMapping(propertyName);
-        BasicResultMapping basicResultMapping = ((BasicResultMapping) mapping);
+        ResultMapping basicResultMapping = ((ResultMapping) mapping);
         assertEquals(columnName, basicResultMapping
                 .getColumnName());
         assertEquals(selectName, basicResultMapping

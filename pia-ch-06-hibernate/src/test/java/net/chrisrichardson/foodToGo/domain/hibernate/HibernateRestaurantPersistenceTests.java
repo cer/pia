@@ -16,11 +16,13 @@
  
 package net.chrisrichardson.foodToGo.domain.hibernate;
 
-import java.util.*;
+import java.util.List;
 
-import net.chrisrichardson.foodToGo.domain.*;
-import net.chrisrichardson.ormunit.hibernate.*;
-import net.chrisrichardson.util.*;
+import net.chrisrichardson.foodToGo.domain.MenuItem;
+import net.chrisrichardson.foodToGo.domain.Restaurant;
+import net.chrisrichardson.foodToGo.domain.RestaurantMother;
+import net.chrisrichardson.ormunit.hibernate.HibernatePersistenceTests;
+import net.chrisrichardson.util.TxnCallback;
 
 public class HibernateRestaurantPersistenceTests extends
 		HibernatePersistenceTests {
@@ -36,7 +38,7 @@ public class HibernateRestaurantPersistenceTests extends
 	public void testSimple() throws Exception {
 		r = RestaurantMother.makeRestaurant();
 		save(r);
-		String id = r.getId();
+		String id = r.getRestaurantId();
 		logger.debug("Loading");
 		r = (Restaurant) load(Restaurant.class, id);
 	}
@@ -44,7 +46,7 @@ public class HibernateRestaurantPersistenceTests extends
 	public void testChangeMenuItem() throws Exception {
 		r = RestaurantMother.makeRestaurant();
 		save(r);
-		final String id = r.getId();
+		final String id = r.getRestaurantId();
 		logger.debug("Loading");
 		doWithTransaction(new TxnCallback() {
 

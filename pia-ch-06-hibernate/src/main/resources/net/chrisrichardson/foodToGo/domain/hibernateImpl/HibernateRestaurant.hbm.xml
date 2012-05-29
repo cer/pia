@@ -20,7 +20,9 @@
 		<set name="serviceArea" lazy="true"
 			table="FTGO_RESTAURANT_ZIPCODE">
 			<key column="RESTAURANT_ID" />
-			<element column="ZIPCODE" type="string" />
+			<element type="string" >
+				<column name="zipcode" index="true"/>
+			</element>
 		</set>
 
 		<list name="menuItems" lazy="true"
@@ -30,15 +32,15 @@
 			<one-to-many class="MenuItem" />
 
 		</list>
-		<set name="timeRanges" lazy="true"
+		<set name="openingHours" lazy="true"
 			table="FTGO_RESTAURANT_TIME_RANGE" cascade="all">
-			<key column="RESTAURANT_ID" />
+			<key>
+				<column name="RESTAURANT_ID" index="true"/>
+			</key>
 			<composite-element class="TimeRange">
 				<property name="dayOfWeek" column="day_Of_Week" />
-				<property name="openHour" column="open_Hour" />
-				<property name="openMinute" column="open_Minute" />
-				<property name="closeHour" column="close_Hour" />
-				<property name="closeMinute" column="close_Minute" />
+				<property name="openingTime" column="opening_time"/>
+				<property name="closingTime" column="closing_time"/>
 			</composite-element>
 		</set>
 	</class>
@@ -47,11 +49,12 @@
 		<![CDATA[
 select r 
 from Restaurant r  
- inner join r.timeRanges tr
- where :zipCode in elements(r.serviceArea) and 
-(tr.dayOfWeek = :dayOfWeek and 
-(tr.openHour < :hour OR (tr.openHour = :hour and tr.openMinute <= :minute)) and 
-(tr.closeHour > :hour OR (tr.closeHour = :hour and tr.closeMinute > :minute)))
+ inner join r.openingHours tr
+ inner join r.serviceArea z
+ where :zipCode = z and 
+	tr.dayOfWeek = :dayOfWeek 
+	  and tr.openingTime <= :timeOfDay 
+	  and :timeOfDay < tr.closingTime 
 ]]>
 	</query>
 

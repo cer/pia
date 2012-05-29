@@ -16,34 +16,32 @@
  
 package net.chrisrichardson.foodToGo.domain;
 
-import java.util.*;
+import java.util.Calendar;
+import java.util.Date;
 
 public class TimeRange {
 	private int id = -1;
 
 	private int dayOfWeek;
 
-	private int openHour;
-
-	private int openMinute;
-
-	private int closeHour;
-
-	private int closeMinute;
-
+	private int openingTime;
+	private int closingTime;
+	
 	public TimeRange() {
 	}
 
 	public TimeRange(int dayOfWeek, int openHour, int openMinute,
 			int closeHour, int closeMinute) {
-		this.dayOfWeek = dayOfWeek;
-		this.openHour = openHour;
-		this.openMinute = openMinute;
-		this.closeHour = closeHour;
-		this.closeMinute = closeMinute;
+		this(dayOfWeek, openHour * 100 + openMinute, closeHour * 100 + closeMinute);
 	}
 
-	public boolean equals(Object x) {
+	public TimeRange(int dayOfWeek, int openingTime, int closingTime) {
+    this.dayOfWeek = dayOfWeek;
+    this.openingTime = openingTime;
+    this.closingTime = closingTime;
+  }
+
+  public boolean equals(Object x) {
 		if (x == null)
 			return false;
 		if (!(x instanceof TimeRange))
@@ -51,45 +49,67 @@ public class TimeRange {
 
 		TimeRange other = (TimeRange) x;
 
-		return dayOfWeek == other.dayOfWeek && openHour == other.openHour
-				&& openMinute == other.openMinute
-				&& closeHour == other.closeHour
-				&& closeMinute == other.closeMinute;
+		return dayOfWeek == other.dayOfWeek && openingTime == other.openingTime && closingTime == other.closingTime;
 	}
 
 	public int hashCode() {
-		return dayOfWeek ^ openHour ^ openMinute ^ closeHour ^ closeMinute;
-	}
-
-	public int getCloseMinute() {
-		return closeMinute;
+		return dayOfWeek ^ openingTime ^ closingTime;
 	}
 
 	public int getDayOfWeek() {
 		return dayOfWeek;
 	}
 
-	public int getOpenHour() {
-		return openHour;
-	}
-
-	public int getOpenMinute() {
-		return openMinute;
-	}
-
-	public int getCloseHour() {
-		return closeHour;
-	}
-
 	public boolean isOpenAtThisTime(Date date) {
 		Calendar c = Calendar.getInstance();
 		c.setTime(date);
 		int day = c.get(Calendar.DAY_OF_WEEK);
-		int hour = c.get(Calendar.HOUR_OF_DAY);
-		int minute = c.get(Calendar.MINUTE);
-		boolean result = day == getDayOfWeek()
-				&& (hour > openHour || (hour == openHour && minute <= openMinute))
-				&& (hour < closeHour || (hour == closeHour && minute < closeMinute));
-		return result;
+		int timeOfDay = c.get(Calendar.HOUR_OF_DAY) * 100 + c.get(Calendar.MINUTE);
+		return day == getDayOfWeek()
+				&& openingTime <= timeOfDay && timeOfDay <= closingTime;
 	}
+
+  public int getClosingTime() {
+    return closingTime;
+  }
+
+  public int getOpeningTime() {
+    return openingTime;
+  }
+  
+  public int getOpenHour() {
+    return openingTime / 100;
+  }
+  
+  public int getOpenMinute() {
+    return openingTime % 100;
+  }
+  
+  public int getCloseHour() {
+    return closingTime / 100;
+  }
+  
+  public int getCloseMinute() {
+    return closingTime % 100;
+  }
+  
+  /// Extra setters
+
+  public void setId(int id) {
+    this.id = id;
+  }
+
+  public void setDayOfWeek(int dayOfWeek) {
+    this.dayOfWeek = dayOfWeek;
+  }
+
+  public void setOpeningTime(int openingTime) {
+    this.openingTime = openingTime;
+  }
+
+  public void setClosingTime(int closingTime) {
+    this.closingTime = closingTime;
+  }
+  
+  
 }

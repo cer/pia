@@ -16,9 +16,10 @@
  
 package net.chrisrichardson.foodToGo.domain;
 
-import java.util.*;
+import java.util.Calendar;
+import java.util.Date;
 
-import net.chrisrichardson.foodToGo.util.*;
+import net.chrisrichardson.foodToGo.util.Address;
 
 public class RestaurantTestData {
 
@@ -65,5 +66,21 @@ public class RestaurantTestData {
     public static final String GOOD_ZIP_CODE = "94619";
 
     public static final String BAD_ZIP_CODE = "94618";
+
+    public static Date makeBadDeliveryTime() {
+      return getTimeTomorrow(4);
+    }
+
+	public static Date makeDeliveryTime(int dayOfWeek, int hour, int minute) {
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.DAY_OF_WEEK, dayOfWeek);
+        c.set(Calendar.HOUR_OF_DAY, hour);
+        c.set(Calendar.MINUTE, minute);
+        c.clear(Calendar.MILLISECOND);
+        if (c.getTime().before(new Date()))
+        	c.add(Calendar.DAY_OF_MONTH, 7);
+        System.out.println("deliveryTime=" + c.getTime());
+        return c.getTime();
+	}
 
 }

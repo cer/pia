@@ -16,10 +16,12 @@
  
 package net.chrisrichardson.foodToGo.domain.hibernate;
 
-import java.util.*;
+import java.util.List;
 
-import net.chrisrichardson.foodToGo.util.hibernate.*;
-import net.chrisrichardson.ormunit.hibernate.*;
+import net.chrisrichardson.foodToGo.util.hibernate.HibernateQueryExecutor;
+import net.chrisrichardson.foodToGo.util.hibernate.HibernateQueryParameters;
+import net.chrisrichardson.foodToGo.util.hibernate.HibernateWrapper;
+import net.chrisrichardson.ormunit.hibernate.HibernatePersistenceTests;
 
 public class FindAvailableRestaurantsQueryTests extends
         HibernatePersistenceTests {
@@ -34,8 +36,7 @@ public class FindAvailableRestaurantsQueryTests extends
         HibernateQueryParameters queryParams = new HibernateQueryParameters("findAvailableRestaurants");
         queryParams.setString("zipCode", "84619");
         queryParams.setInteger("dayOfWeek", 6);
-        queryParams.setInteger("hour", 1);
-        queryParams.setInteger("minute", 3);
+        queryParams.setInteger("timeOfDay", 103);
 
         HibernateWrapper qe = new HibernateQueryExecutor(getHibernateTemplate());
         List result = qe.executeNamedQuery(queryParams);

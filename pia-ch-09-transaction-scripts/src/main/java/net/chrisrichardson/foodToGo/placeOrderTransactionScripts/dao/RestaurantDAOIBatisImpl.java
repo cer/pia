@@ -16,13 +16,17 @@
  
 package net.chrisrichardson.foodToGo.placeOrderTransactionScripts.dao;
 
-import java.util.*;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-import net.chrisrichardson.foodToGo.placeOrderTransactionScripts.details.*;
-import net.chrisrichardson.foodToGo.util.*;
+import net.chrisrichardson.foodToGo.placeOrderTransactionScripts.details.RestaurantDTO;
+import net.chrisrichardson.foodToGo.util.Address;
 
-import org.springframework.orm.ibatis.*;
-import org.springframework.orm.ibatis.support.*;
+import org.springframework.orm.ibatis.SqlMapClientTemplate;
+import org.springframework.orm.ibatis.support.SqlMapClientDaoSupport;
 
 public class RestaurantDAOIBatisImpl extends SqlMapClientDaoSupport implements
 		RestaurantDAO {
@@ -48,8 +52,7 @@ public class RestaurantDAOIBatisImpl extends SqlMapClientDaoSupport implements
 		Map deliveryInfo = new HashMap();
 		deliveryInfo.put("zipCode", zipCode);
 		deliveryInfo.put("dayOfWeek", new Integer(dayOfWeek));
-		deliveryInfo.put("hour", new Integer(hour));
-		deliveryInfo.put("minute", new Integer(minute));
+		deliveryInfo.put("deliveryTime", hour*100 + minute);
 		return getSqlMapClientTemplate().queryForList(
 				"findAvailableRestaurants", deliveryInfo);
 	}
@@ -71,8 +74,7 @@ public class RestaurantDAOIBatisImpl extends SqlMapClientDaoSupport implements
 		Map params = new HashMap();
 		params.put("zipCode", zipCode);
 		params.put("dayOfWeek", new Integer(dayOfWeek));
-		params.put("hour", new Integer(hour));
-		params.put("minute", new Integer(minute));
+    params.put("deliveryTime", hour*100 + minute);
 		params.put("restaurantId", restaurantId);
 		
 		Object result = getSqlMapClientTemplate().queryForObject("isInServiceArea", params);

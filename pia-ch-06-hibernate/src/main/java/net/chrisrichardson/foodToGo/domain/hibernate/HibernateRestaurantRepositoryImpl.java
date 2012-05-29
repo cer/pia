@@ -16,16 +16,25 @@
  
 package net.chrisrichardson.foodToGo.domain.hibernate;
 
-import java.sql.*;
-import java.util.*;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 
-import net.chrisrichardson.foodToGo.domain.*;
-import net.chrisrichardson.foodToGo.util.*;
+import net.chrisrichardson.foodToGo.domain.Order;
+import net.chrisrichardson.foodToGo.domain.Restaurant;
+import net.chrisrichardson.foodToGo.domain.RestaurantRepository;
+import net.chrisrichardson.foodToGo.util.Address;
 
-import org.hibernate.*;
-import org.springframework.orm.hibernate3.*;
-import org.springframework.orm.hibernate3.support.*;
+import org.hibernate.HibernateException;
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.springframework.orm.hibernate3.HibernateCallback;
+import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 public class HibernateRestaurantRepositoryImpl extends HibernateDaoSupport
 		implements RestaurantRepository {
@@ -41,7 +50,7 @@ public class HibernateRestaurantRepositoryImpl extends HibernateDaoSupport
 
 	public List findAvailableRestaurants(Address deliveryAddress,
 			Date deliveryTime) {
-		String[] paramNames = { "zipCode", "dayOfWeek", "hour", "minute" };
+		String[] paramNames = { "zipCode", "dayOfWeek", "timeOfDay" };
 		Object[] paramValues = makeParameterValues(deliveryAddress,
 				deliveryTime);
 		List result = getHibernateTemplate().findByNamedQueryAndNamedParam(
@@ -53,12 +62,11 @@ public class HibernateRestaurantRepositoryImpl extends HibernateDaoSupport
 		Calendar c = Calendar.getInstance();
 		c.setTime(deliveryTime);
 		int dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
-		int hour = c.get(Calendar.HOUR_OF_DAY);
-		int minute = c.get(Calendar.MINUTE);
+		int timeOfDay = c.get(Calendar.HOUR_OF_DAY) * 100 + c.get(Calendar.MINUTE);
 		String zipCode = deliveryAddress.getZip();
 
 		Object[] values = new Object[] { zipCode, new Integer(dayOfWeek),
-				new Integer(hour), new Integer(minute) };
+				new Integer(timeOfDay)};
 		return values;
 	}
 

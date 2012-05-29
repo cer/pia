@@ -16,12 +16,16 @@
  
 package net.chrisrichardson.foodToGo.domain.hibernate;
 
-import java.util.*;
+import java.util.Date;
 
-import net.chrisrichardson.foodToGo.domain.*;
-import net.chrisrichardson.foodToGo.util.*;
-import net.chrisrichardson.ormunit.hibernate.*;
-import net.chrisrichardson.util.*;
+import net.chrisrichardson.foodToGo.domain.PendingOrder;
+import net.chrisrichardson.foodToGo.domain.PendingOrderLineItem;
+import net.chrisrichardson.foodToGo.domain.PlaceOrderStatusCodes;
+import net.chrisrichardson.foodToGo.domain.Restaurant;
+import net.chrisrichardson.foodToGo.domain.RestaurantMother;
+import net.chrisrichardson.foodToGo.util.Address;
+import net.chrisrichardson.ormunit.hibernate.HibernatePersistenceTests;
+import net.chrisrichardson.util.TxnCallback;
 
 public class HibernatePendingOrderRepositoryTests extends
 		HibernatePersistenceTests {
@@ -60,7 +64,7 @@ public class HibernatePendingOrderRepositoryTests extends
 			throws Exception {
 		Restaurant r = RestaurantMother.makeRestaurant();
 		save(r);
-		final String restaurantId = r.getId();
+		final String restaurantId = r.getRestaurantId();
 
 		PendingOrder po1 = repository.findOrCreatePendingOrder(null);
 		final String pendingOrderId = po1.getId();

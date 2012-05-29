@@ -16,11 +16,19 @@
  
 package net.chrisrichardson.foodToGo.domain;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class RestaurantMother {
 
-    public static final String RESTAURANT_NAME = "Ajanta";
+    private static final String LATE_NIGHT_SNACK = "Late Night Snack";
+    public static final String MONTCLAIR_EGGSHOP = "Montclair Eggshop";
+	public static final String RESTAURANT_NAME = "Ajanta";
     public static final int OPENING_HOUR = 18;
     public static final int OPENING_MINUTE = 12;
     public static final int CLOSING_MINUTE = 50;
@@ -35,20 +43,7 @@ public class RestaurantMother {
 
     public static Restaurant makeRestaurant(String zipCode) {
 //        OpeningHours hours = new OpeningHours();
-        Set hours = new HashSet();
-        TimeRange tr;
-        tr = new TimeRange(Calendar.TUESDAY, OPENING_HOUR, OPENING_MINUTE, CLOSING_HOUR, CLOSING_MINUTE);
-        hours.add(tr);
-        tr = new TimeRange(Calendar.WEDNESDAY, OPENING_HOUR, OPENING_MINUTE, CLOSING_HOUR, CLOSING_MINUTE);
-        hours.add(tr);
-        tr = new TimeRange(Calendar.THURSDAY, OPENING_HOUR, OPENING_MINUTE, CLOSING_HOUR, CLOSING_MINUTE);
-        hours.add(tr);
-        tr = new TimeRange(Calendar.FRIDAY, OPENING_HOUR, OPENING_MINUTE, CLOSING_HOUR, CLOSING_MINUTE);
-        hours.add(tr);
-        tr = new TimeRange(Calendar.SATURDAY, OPENING_HOUR, OPENING_MINUTE, CLOSING_HOUR, CLOSING_MINUTE);
-        hours.add(tr);
-        tr = new TimeRange(Calendar.SUNDAY, OPENING_HOUR, OPENING_MINUTE, CLOSING_HOUR, CLOSING_MINUTE);
-        hours.add(tr);
+        Set hours = makeOpeningHours(OPENING_MINUTE);
         List menuItems = new ArrayList();
         MenuItem mi1 = new MenuItem("Samosas", 5.00);
         MenuItem mi2 = new MenuItem("Chicken Tikka", 6.50);
@@ -57,9 +52,25 @@ public class RestaurantMother {
 
         Set serviceArea = new HashSet();
         serviceArea.add(zipCode);
+        serviceArea.add("99999");
 
         return new Restaurant(RESTAURANT_NAME, "Indian", serviceArea,
                 hours, menuItems);
+    }
+
+    public static Set makeOpeningHours(int openMinute) {
+      return makeOpeningHours(OPENING_HOUR, openMinute);
+    }
+
+    public static Set makeOpeningHours(int openingHour, int openMinute) {
+      Set hours = new HashSet();
+      
+      for (int dayOfWeek : new int[]{Calendar.MONDAY, Calendar.TUESDAY, Calendar.WEDNESDAY, Calendar.THURSDAY, Calendar.FRIDAY, Calendar.SATURDAY, Calendar.SUNDAY}) {
+        hours.add(new TimeRange(dayOfWeek, openingHour, openMinute, CLOSING_HOUR, CLOSING_MINUTE));
+        hours.add(new TimeRange(dayOfWeek, 11, 30, 14, 30));
+        
+      }
+      return hours;
     }
 
     public static Date makeDeliveryTime() {
@@ -71,4 +82,27 @@ public class RestaurantMother {
         c.clear(Calendar.MINUTE);
         return c.getTime();
     }
+
+	public static Restaurant makeEggShopRestaurant() {
+		Set<TimeRange> openingHours = new HashSet<TimeRange>();
+		for (int dayOfWeek : new int[]{Calendar.MONDAY, Calendar.TUESDAY, Calendar.WEDNESDAY, Calendar.THURSDAY, Calendar.FRIDAY}) {
+			openingHours.add(new TimeRange(dayOfWeek, 7, 0, 14, 30));
+		}
+		for (int dayOfWeek : new int[]{Calendar.SATURDAY, Calendar.SUNDAY}) {
+			openingHours.add(new TimeRange(dayOfWeek, 8, 0, 15, 00));
+		}
+
+		List<MenuItem> menuItems = new ArrayList<MenuItem>();
+		return new Restaurant(MONTCLAIR_EGGSHOP, "Diner", Collections.singleton("94619"), openingHours, menuItems);
+	}
+
+	public static Restaurant makeLateNightTacos() {
+	  Set<TimeRange> openingHours = new HashSet<TimeRange>();
+	  for (int dayOfWeek : new int[]{Calendar.MONDAY, Calendar.TUESDAY, Calendar.WEDNESDAY, Calendar.THURSDAY, Calendar.FRIDAY, Calendar.SATURDAY, Calendar.SUNDAY}) {
+	    openingHours.add(new TimeRange(dayOfWeek, 22, 0, 23, 0));
+	  }
+
+	  List<MenuItem> menuItems = new ArrayList<MenuItem>();
+	  return new Restaurant(LATE_NIGHT_SNACK, "Diner", Collections.singleton("94619"), openingHours, menuItems);
+	}
 }

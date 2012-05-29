@@ -16,13 +16,18 @@
  
 package net.chrisrichardson.foodToGo.domain.hibernate;
 
-import java.sql.*;
-import java.util.*;
+import java.sql.SQLException;
+import java.util.Collections;
 
-import net.chrisrichardson.foodToGo.domain.*;
-import net.chrisrichardson.ormunit.hibernate.*;
+import net.chrisrichardson.foodToGo.domain.Order;
+import net.chrisrichardson.foodToGo.domain.PendingOrder;
+import net.chrisrichardson.foodToGo.domain.Restaurant;
+import net.chrisrichardson.ormunit.hibernate.ComponentFieldMapping;
+import net.chrisrichardson.ormunit.hibernate.CompositeListFieldMapping;
+import net.chrisrichardson.ormunit.hibernate.CompositeSetFieldMapping;
+import net.chrisrichardson.ormunit.hibernate.HibernateMappingTests;
 
-import org.hibernate.*;
+import org.hibernate.HibernateException;
 
 public class FoodToGoHibernateMappingTests extends HibernateMappingTests {
 
@@ -65,8 +70,8 @@ public class FoodToGoHibernateMappingTests extends HibernateMappingTests {
 		assertOneToManyListField("menuItems", "RESTAURANT_ID",
 				"MENU_ITEM_INDEX");
 
-		assertSetField("timeRanges");
-		CompositeSetFieldMapping timeRanges = getCompositeSetFieldMapping("timeRanges");
+		assertSetField("openingHours");
+		CompositeSetFieldMapping timeRanges = getCompositeSetFieldMapping("openingHours");
 		timeRanges.assertField("dayOfWeek", "DAY_OF_WEEK");
 		// ...
 		timeRanges.assertNonPersistentFields("id");

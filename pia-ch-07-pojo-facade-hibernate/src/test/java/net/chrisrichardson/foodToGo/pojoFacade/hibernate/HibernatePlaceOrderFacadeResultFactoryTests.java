@@ -16,17 +16,25 @@
  
 package net.chrisrichardson.foodToGo.pojoFacade.hibernate;
 
-import java.util.*;
+import java.util.Date;
 
-import net.chrisrichardson.foodToGo.domain.*;
-import net.chrisrichardson.foodToGo.domain.hibernate.*;
-import net.chrisrichardson.foodToGo.pojoFacade.*;
-import net.chrisrichardson.foodToGo.util.*;
-import net.chrisrichardson.foodToGo.views.*;
-import net.chrisrichardson.ormunit.hibernate.*;
-import net.chrisrichardson.util.*;
+import net.chrisrichardson.foodToGo.domain.MenuItem;
+import net.chrisrichardson.foodToGo.domain.PendingOrder;
+import net.chrisrichardson.foodToGo.domain.PendingOrderLineItem;
+import net.chrisrichardson.foodToGo.domain.PlaceOrderStatusCodes;
+import net.chrisrichardson.foodToGo.domain.Restaurant;
+import net.chrisrichardson.foodToGo.domain.RestaurantMother;
+import net.chrisrichardson.foodToGo.domain.RestaurantTestData;
+import net.chrisrichardson.foodToGo.domain.hibernate.HibernateRestaurantRepositoryImpl;
+import net.chrisrichardson.foodToGo.domain.hibernate.HibernateTestConstants;
+import net.chrisrichardson.foodToGo.pojoFacade.PlaceOrderFacadeResult;
+import net.chrisrichardson.foodToGo.pojoFacade.PlaceOrderFacadeResultFactory;
+import net.chrisrichardson.foodToGo.util.Address;
+import net.chrisrichardson.foodToGo.views.PendingOrderDetail;
+import net.chrisrichardson.ormunit.hibernate.HibernatePersistenceTests;
+import net.chrisrichardson.util.TxnCallback;
 
-import org.springframework.orm.hibernate3.*;
+import org.springframework.orm.hibernate3.HibernateTemplate;
 
 public class HibernatePlaceOrderFacadeResultFactoryTests extends
         HibernatePersistenceTests {
@@ -69,7 +77,7 @@ public class HibernatePlaceOrderFacadeResultFactoryTests extends
                 restaurant = RestaurantMother.makeRestaurant();
                 save(restaurant);
 
-                restaurantId = restaurant.getId();
+                restaurantId = restaurant.getRestaurantId();
 
             }
         });

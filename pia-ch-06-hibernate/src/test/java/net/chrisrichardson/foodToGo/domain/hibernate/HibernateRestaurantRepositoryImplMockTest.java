@@ -16,13 +16,17 @@
  
 package net.chrisrichardson.foodToGo.domain.hibernate;
 
-import java.util.*;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
 
-import net.chrisrichardson.foodToGo.domain.*;
-import net.chrisrichardson.foodToGo.util.*;
+import net.chrisrichardson.foodToGo.domain.Restaurant;
+import net.chrisrichardson.foodToGo.util.Address;
 
-import org.jmock.cglib.*;
-import org.springframework.orm.hibernate3.*;
+import org.jmock.cglib.Mock;
+import org.jmock.cglib.MockObjectTestCase;
+import org.springframework.orm.hibernate3.HibernateTemplate;
 
 public class HibernateRestaurantRepositoryImplMockTest extends
 		MockObjectTestCase {
@@ -48,10 +52,9 @@ public class HibernateRestaurantRepositoryImplMockTest extends
 			EXPECTED_MINUTE);
 
 	Object[] expectedValues = new Object[] { deliveryAddress.getZip(),
-			new Integer(EXPECTED_DAY_OF_WEEK), new Integer(EXPECTED_HOUR),
-			new Integer(EXPECTED_MINUTE) };
+			new Integer(EXPECTED_DAY_OF_WEEK), new Integer(EXPECTED_HOUR * 100 + EXPECTED_MINUTE) };
 
-	String[] expectedNames = { "zipCode", "dayOfWeek", "hour", "minute" };
+	String[] expectedNames = { "zipCode", "dayOfWeek", "timeOfDay"};
 
 	public void setUp() {
 		mockHibernateTemplate = new Mock(HibernateTemplate.class);

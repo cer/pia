@@ -16,7 +16,7 @@
  
 package net.chrisrichardson.foodToGo.domain;
 
-import java.io.*;
+import java.io.Serializable;
 
 public class MenuItem implements Serializable {
 
@@ -42,6 +42,24 @@ public class MenuItem implements Serializable {
 
     public double getPrice() {
         return price;
+    }
+
+    // Extra setters
+    
+    public void setId(int id) {
+      this.id = id;
+    }
+
+    public void setVersion(int version) {
+      this.version = version;
+    }
+
+    public void setName(String name) {
+      this.name = name;
+    }
+
+    public void setPrice(double price) {
+      this.price = price;
     }
 
 

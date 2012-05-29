@@ -16,15 +16,21 @@
  
 package net.chrisrichardson.foodToGo.domain.hibernate;
 
-import java.util.*;
+import java.util.Date;
 
-import net.chrisrichardson.foodToGo.creditCardProcessing.*;
-import net.chrisrichardson.foodToGo.domain.*;
-import net.chrisrichardson.foodToGo.util.*;
-import net.chrisrichardson.ormunit.hibernate.*;
-import net.chrisrichardson.util.*;
+import net.chrisrichardson.foodToGo.creditCardProcessing.PaymentInformation;
+import net.chrisrichardson.foodToGo.domain.Coupon;
+import net.chrisrichardson.foodToGo.domain.FreeShippingCoupon;
+import net.chrisrichardson.foodToGo.domain.PendingOrder;
+import net.chrisrichardson.foodToGo.domain.PercentageDiscountCoupon;
+import net.chrisrichardson.foodToGo.domain.PlaceOrderStatusCodes;
+import net.chrisrichardson.foodToGo.domain.Restaurant;
+import net.chrisrichardson.foodToGo.domain.RestaurantMother;
+import net.chrisrichardson.foodToGo.util.Address;
+import net.chrisrichardson.ormunit.hibernate.HibernatePersistenceTestsWithResetDatabase;
+import net.chrisrichardson.util.TxnCallback;
 
-import org.hibernate.*;
+import org.hibernate.Hibernate;
 
 public class HibernatePendingOrderPersistenceTests extends
 		HibernatePersistenceTestsWithResetDatabase {
@@ -60,7 +66,7 @@ public class HibernatePendingOrderPersistenceTests extends
 				getHibernateTemplate());
 		Restaurant r = RestaurantMother.makeRestaurant();
 		save(r);
-		restaurantId = r.getId();
+		restaurantId = r.getRestaurantId();
 	}
 
 	public void testSimple() throws Exception {
